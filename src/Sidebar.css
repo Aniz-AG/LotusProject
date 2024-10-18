@@ -1,0 +1,24 @@
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+  
+  /* For Firefox */
+  /* You can customize these properties to your liking */
+  /* Note: This selector might change based on the Firefox version */
+  /* For newer versions, you might need to use scrollbar-width property */
+  /* For older versions (pre-Firefox Quantum), you might need -moz-scrollbar */
+  /* Check and modify accordingly */
+  html {
+    scrollbar-width: none;
+  }
+  /* Sidebar CSS */
+.hs-overlay {
+  /* Other styles */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.hs-overlay::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}

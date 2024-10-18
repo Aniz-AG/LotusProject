@@ -1,0 +1,66 @@
+.my-text {
+    /* Apply styles to avoid overlap */
+    margin-left: 30px; /* Adjust this value to create space between the icon and text */
+    /* Add animation for smooth movement */
+    animation: scrollText 5s infinite linear;
+    white-space: nowrap; /* Ensure the text stays in one line */
+    overflow: hidden; /* Hide any overflowed text */
+  }
+
+  .backdrop--active{
+    display: block;
+    position : fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 1;
+  }
+  
+  .backdrop{
+    position : fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0,0,0,0.4);
+    display: none;
+    
+
+  }
+
+  .sidebar--active{
+    transform: translateX(0);
+    position :fixed;
+    top:0;
+    left:0;
+    width :70%;
+    max-width: 18rem;
+    overflow-y: auto;
+    height:100%;
+    transition: all 1s cubic-bezier(0.075,0.82,0.165,1);
+    box-shadow: 0 0 4px rgba(0.0,0.2);
+    z-index:5;
+  }
+
+  .sidebar{
+    position :fixed;
+    top:0;
+    left:0;
+    width :70%;
+    max-width: 18rem;
+    height:100%;
+    transition: all 1s cubic-bezier(0.075,0.82,0.165,1);
+    box-shadow: 0 0 4px rgba(0.0,0.2);
+    transform: translateX(-100%);
+    z-index:5;
+  }
+
+  .sidebar_profile{
+    padding: 1rem 1.5rem;
+    display: flex;
+    border-bottom: 2px solid rgba(2,2,2,0.1);
+    align-items: center;
+  }

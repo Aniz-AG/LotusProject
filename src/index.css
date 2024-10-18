@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+}
+
+body {
+  @apply font-sans; /* Use the default sans font defined in Tailwind */
+}
+
+/* Ensure Poppins is applied globally */
+* {
+  font-family: 'Poppins', sans-serif; /* Set Poppins as the default font */
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
