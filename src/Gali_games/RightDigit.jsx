@@ -26,8 +26,7 @@ function RightDigit() {
   const formattedDate = day + "-" + months[monthIndex] + "-" + year;
   const [submit, setSubmit]= useState('');
 
-  
-  console.log(formattedDate);
+    console.log(formattedDate);
   const navbarStyle = {
     height: "60px",
     display: "flex",
@@ -313,7 +312,7 @@ function RightDigit() {
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Close Digit</h3>
+                      <h3>Digit</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">

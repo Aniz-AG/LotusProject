@@ -159,7 +159,7 @@ const GaliModal = ({
           </div>
           <div className="flex flex-col">
             <p>Game Type</p>
-            <p className="text-center">Close</p>
+            <p className="text-center">-</p>
           </div>
         </div>
         <div className="flex justify-around mt-2 text-white">

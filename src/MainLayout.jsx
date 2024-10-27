@@ -9,7 +9,7 @@ const MainLayout = () => {
       <main className="flex-grow">
         <Outlet />
       </main>
-      <Footer className="footer" />
+      <Footer className="footer sticky bottom-0 z-3" />
     </div>
   );
 };

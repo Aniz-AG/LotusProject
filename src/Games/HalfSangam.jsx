@@ -401,8 +401,55 @@ function HalfSangam() {
       setOpenDigitValue("");
       setDigitValue("");
       setPointValue("");
+
+      
     }
   };
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+
+//     setFormErrors({});
+//     const errors = validate(digit.current.value, point.current.value, Opendigit.current.value);
+//     setFormErrors(errors);
+
+//     if (Object.keys(errors).length > 0) {
+//       if (errors.digit) {
+//         toast(errors.digit);
+//       } else if (errors.Opendigit) {
+//         toast(errors.Opendigit);
+//       } else {
+//         toast(errors.point);
+//       }
+//       return;
+//     } else {
+//       setIsProceed(true);
+//       setFormErrors({});
+      
+//       // Check whether the selected option is "open" or "close" and assign the appropriate values
+//       const selectedDigit = selectedOption === "open" ? Opendigit.current.value : digit.current.value;
+//       const digitType = selectedOption === "open" ? "open digit" : "close digit";
+
+//       const newDataObject = {
+//         digitType,  // This will be either "open digit" or "close digit"
+//         digits: selectedDigit,
+//         points: point.current.value,
+//         session: selectedOption, // "open" or "close"
+//       };
+
+//       const newWalletAmt = walletAmt - point.current.value;
+//       setWalletAmt(newWalletAmt);
+
+//       setSubmittedData((prevData) => {
+//         const updatedData = [...prevData, newDataObject];
+//         return updatedData;
+//       });
+
+//       setOpenDigitValue("");
+//       setDigitValue("");
+//       setPointValue("");
+//     }
+// };
+
   const setOpenDigitValue = (value) => {
     Opendigit.current.value = value;
   };
@@ -435,30 +482,43 @@ function HalfSangam() {
   };
 
   const calculateTimeLeft = () => {
-    const openTimeWithoutSuffix = openTime.replace(/\s[AaPp][Mm]$/, "");
-    const openDateString = new Date().toLocaleDateString('en-CA'); // ISO format YYYY-MM-DD
-    const open = `${openDateString}T${openTimeWithoutSuffix}`;
-    
-    const openDate = new Date(open);
-    
-    // Check if openDate is valid
-    if (isNaN(openDate.getTime())) {
-        console.error("Invalid date:", open);
-        return;
-    }
-
-    const openMillisec = openDate.getTime(); // Use getTime() for milliseconds
-    console.log("time1", openMillisec);
-    console.log("time2", Date.now());
-    if (openMillisec <= Date.now()) {
-        setIsOpen(false);
-        setSelectedOption("close");
-    }
-    else {
+    // Function to convert 12-hour format (e.g., "10:59 PM") to 24-hour format ("22:59")
+    const convertTo24Hour = (time12h) => {
+      const [time, modifier] = time12h.split(' ');
+      let [hours, minutes] = time.split(':');
+  
+      if (modifier.toLowerCase() === 'pm' && hours !== '12') {
+        hours = (parseInt(hours, 10) + 12).toString();
+      }
+      if (modifier.toLowerCase() === 'am' && hours === '12') {
+        hours = '00';
+      }
+      return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    };
+  
+    // Convert openTime to 24-hour format
+    const openTime24Hour = convertTo24Hour(openTime);
+    console.log("Converted open time (24-hour):", openTime24Hour);
+  
+    // Get the current clock time (HH:MM)
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours().toString().padStart(2, '0');
+    const currentMinutes = currentTime.getMinutes().toString().padStart(2, '0');
+    const currentTimeOnly = `${currentHours}:${currentMinutes}`;
+  
+    console.log("Current time (HH:MM):", currentTimeOnly);
+  
+    // Compare the converted open time and current time
+    if (openTime24Hour <= currentTimeOnly) {
+      setIsOpen(false);
+      setSelectedOption("close");
+    } else {
       setIsOpen(true);
       setSelectedOption("open");
     }
-};
+  };
+
+  const totalPoints=submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0)
 
   return (
     <> 
@@ -517,13 +577,13 @@ function HalfSangam() {
                 </label>
               </div>
               </div>
-            <p className="mt-2 ml-2 font-bold text-white">Open Digit</p>
+            <p className="mt-2 ml-2 font-bold text-white">{selectedOption === "open" ? "Open Digit" : "Close Digit"}</p>
             <input
               type="number"
               inputMode="numeric"
               ref={Opendigit}
               placeholder="Enter Digit"
-              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-white"
+              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black"
               list="digitList" // Step 2: Add list attribute
               autoComplete="off"
             />
@@ -532,13 +592,13 @@ function HalfSangam() {
                 <option key={index} value={digit} />
               ))}
             </datalist>
-            <p className="mt-2 ml-2 font-bold text-white">Close Digit</p>
+            <p className="mt-2 ml-2 font-bold text-white">{selectedOption === "open" ? "Close Pana" : "Open Pana"}</p>
             <input
               type="number"
               inputMode="numeric"
               ref={digit}
-              placeholder="Enter Digit"
-              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-white"
+              placeholder="Enter Pana"
+              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black"
               list="digitClosedList" // Step 2: Add list attribute
               autoComplete="off"
             />
@@ -553,7 +613,7 @@ function HalfSangam() {
               inputMode="numeric"
               ref={point}
               placeholder="Enter Points"
-              className="shadow-md w-full  py-2 px-4 border border-black-500 rounded-xl text-white"
+              className="shadow-md w-full  py-2 px-4 border border-black-500 rounded-xl text-black"
             />
             <div className="flex  mb-4 text-white">
               <button
@@ -581,6 +641,7 @@ function HalfSangam() {
                       gameId={gameId}
                       gameName={gameName}
                       pana={pana}
+                      gametype={selectedOption==="open" ? "Open" : "Close"}
                       date={formattedDate}
                       clearSubmittedData={clearSubmittedData}
                     />
@@ -614,7 +675,7 @@ function HalfSangam() {
               return (
                 <div key={index} className="w-full flex mb-3 ">
                   <div
-                    className="shadow-md w-10/12 p-1 border border-black-500 bg-white text-white flex justify-between"
+                    className="shadow-md w-10/12 p-1 border border-black-500 bg-white text-black flex justify-between"
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">

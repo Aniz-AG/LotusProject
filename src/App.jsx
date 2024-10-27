@@ -13,6 +13,8 @@ import Login from './Login.jsx';
 import Imp from './IMP.jsx';
 import Otp from './Otp';
 import Otp2 from './Otp2';
+import OTPForgotPassword from './OTPForgotPassword.jsx';
+import ChangePassword from './ChangePassword.jsx';
 import LandingIMP from './LandingPage/LandingIMP.jsx';
 import AddFunds from './WALLET/AddFund.jsx';
 import Win from './WIN/Win.jsx';
@@ -32,7 +34,7 @@ import Transaction from './WALLET/Transaction.jsx';
 import MyModal from './ShowModal.jsx';
 import Transfer from './WALLET/Transfer.jsx';
 import TransferModel from './WALLET/TransferModel.jsx';
-import AddFundHistory from './WALLET/AddFundHistroy.jsx';
+import AddFundHistroy from './WALLET/AddFundHistroy.jsx';
 import WithdrawRule from './WALLET/WithdrawRule.jsx';
 import DepositRule from './WALLET/DepositRule.jsx';
 import WithdrawHistory from './WALLET/WithdrawHistory.jsx';
@@ -64,6 +66,9 @@ import HalfSangam from './Games/HalfSangam.jsx';
 import TripplePana from './Games/TripplePana.jsx';
 import SinglePana from './Games/SinglePana.jsx';
 import DoublePana from './Games/DoublePana.jsx';
+import Spdptp from './Games/spdptp.jsx';
+import Spmotor from './Games/Spmotor.jsx';
+import Dpmotor from './Games/Dpmotor.jsx';
 import Jodi from './Games/Jodi.jsx';
 import MainLayout from './MainLayout';
 import BasicLayout from './BasicLayout';
@@ -89,7 +94,7 @@ function App() {
             <Route path="/mymodel" element={<MyModal />} />
             <Route path="/transfer" element={<Transfer />} />
             <Route path="/transfermodel" element={<TransferModel />} />
-            <Route path="/addfundhistory" element={<AddFundHistory />} />
+            <Route path="/addfundhistroy" element={<AddFundHistroy />} />
             <Route path="/withdrawrule" element={<WithdrawRule />} />
             <Route path="/depositrule" element={<DepositRule />} />
             <Route path="/withdrawhistory" element={<WithdrawHistory />} />
@@ -118,10 +123,16 @@ function App() {
             <Route path="/tripplepana" element={<TripplePana />} />
             <Route path="/doublepana" element={<DoublePana />} />
             <Route path="/singlepana" element={<SinglePana />} />
+            <Route path="/spdptp" element={<Spdptp />} />
+            <Route path="/spmotor" element={<Spmotor />} />
+            <Route path="/dpmotor" element={<Dpmotor />} />
             <Route path="/jodi" element={<Jodi />} />
 
             
             <Route path="/otp2" element={<Otp2 />} />
+            <Route path="/OTPForgotPassword" element={<OTPForgotPassword />} />
+            <Route path="/change-password" element={<ChangePassword/>}/>
+            
             <Route path="/addfund" element={<AddFunds />} />
             <Route path="/win" element={<Win />} />
             <Route path="/windata" element={<Windata />} />

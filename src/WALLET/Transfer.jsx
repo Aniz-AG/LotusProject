@@ -10,21 +10,6 @@ import TransferModel from "./TransferModel";
 import useWallet from "../Hooks/useWallet";
 
 function Transfer() {
-  const navbarStyle = {
-    height: "60px",
-    display: "flex",
-    alignItems: "center",
-    position: "relative",
-  };
-  const cardStyle = {
-    width: "400px",
-    display: "flex",
-    flexDirection: "column",
-    padding: "20px",
-  };
-  const back = () => {
-    navigate("/imp");
-  };
   const phoneno = useRef();
   const points = useRef();
   const token = useSelector((state) => state.userDetail.token);
@@ -34,24 +19,20 @@ function Transfer() {
   const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const closeModal = () => {
-    setShowModal(false);
-    rerenderPage(); // Trigger a rerender when the modal is closed
-  };
   const [transactionData, setTransactionData] = useState({});
   const [walletAmt, setWalletAmt] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const closeModal = () => {
+    setShowModal(false);
+    rerenderPage(); // Trigger a rerender when the modal is closed
+  };
 
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
-    const errors = validate(
-      phoneno.current.value,
-      points.current.value,
-      mobile
-    );
+    const errors = validate(phoneno.current.value, points.current.value, mobile);
 
     setFormErrors(errors);
 
@@ -61,11 +42,7 @@ function Transfer() {
     }
 
     try {
-      const result = await fetchData(
-        phoneno.current.value,
-        points.current.value,
-        token
-      );
+      const result = await fetchData(phoneno.current.value, points.current.value, token);
       if (result?.status === true) {
         setTransactionData(result); // Set transaction data from API response
         console.log(transactionData);
@@ -76,7 +53,7 @@ function Transfer() {
       }
     } catch (error) {
       setErrorText("Username or password incorrect"); // Set error message
-    }finally {
+    } finally {
       setIsSubmitting(false); // Always reset submitting state after request is completed
     }
   };
@@ -97,20 +74,17 @@ function Transfer() {
       errors.points = "Points is required!";
     } else if (points < 100) {
       errors.points = "Points Must be More than 100";
+    } else if (points > res.wallet_amt) {
+      errors.points = "Not Enough Points";
     }
-    else if(points>res.wallet_amt){
-      errors.points="Not Enough Points"
-    }
+
     return errors;
   };
 
   const fetchData = async (phoneno, points, token) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append(
-      "Cookie",
-      "ci_session=7c38fc1fc455fca9846d688fb8343f5c7ea71bee"
-    );
+    myHeaders.append("Cookie", "ci_session=7c38fc1fc455fca9846d688fb8343f5c7ea71bee");
 
     const raw = JSON.stringify({
       env_type: "Prod",
@@ -126,13 +100,9 @@ function Transfer() {
       redirect: "follow",
     };
 
-    const response = await fetch(
-      "https://lotus365matka.in/api-check-user-for-transfer-amt",
-      requestOptions
-    );
+    const response = await fetch("https://lotus365matka.in/api-check-user-for-transfer-amt", requestOptions);
     return await response.json();
   };
-  
 
   const res = useWallet(token);
   useEffect(() => {
@@ -142,37 +112,34 @@ function Transfer() {
   }, [res.wallet_amt]);
 
   return (
-    <>
-      
-
-      <div
-        
-        className="text-black flex flex-col justify-center items-center pt-5"
-      >
-                    <div className="font-bold flex items-center justify-center text-2xl "><h1>TRANSFER POINTS</h1></div>
-        <form onSubmit={handleSubmit} style={cardStyle}>
-          <p className="font-bold ">Enter Points</p>
+    <div className="min-h-screen bg-my-gradient-1 flex justify-center mx-auto py-4">
+      <div className="mx-auto flex flex-col items-center">
+        <div className="font-bold text-white flex items-center justify-center text-2xl mb-4">
+          <h1>TRANSFER POINTS</h1>
+        </div>
+        <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md">
+          <p className="font-bold">Enter Points</p>
           <input
-            className="py-3 px-5 my-2 rounded-xl text-black border "
+            className="py-3 px-5 my-2 rounded-full text-black border w-full"
             placeholder="Enter Points"
             type="text"
             ref={points}
           />
           <p className="text-red-500 font-bold text-center">{formErrors.points}</p>
-          <p className="font-bold ">Enter Phone Number</p>
+          <p className="font-bold">Enter Phone Number</p>
           <input
-            className="py-3 px-5 my-2 rounded-xl text-black  border"
+            className="py-3 px-5 my-2 rounded-full text-black border w-full"
             placeholder="Enter Number"
             type="text"
             ref={phoneno}
           />
           <p className="text-red-500 font-bold text-center">{formErrors.phoneno}</p>
-          <div className=" flex justify-center items-center">
+          <div className="flex justify-center items-center">
             <button
-              className="py-3 px-2 w-48  text-white rounded bg-my-gradient hover:bg-yellow-500  "
+              className="py-3 px-5 w-full bg-yellow-500 text-white rounded-full font-bold hover:bg-yellow-600"
               type="submit"
             >
-                {isSubmitting ? "Submitting..." : "Transfer"}
+              {isSubmitting ? "Submitting..." : "Transfer"}
             </button>
             {showModal && (
               <TransferModel
@@ -184,13 +151,10 @@ function Transfer() {
             )}
           </div>
         </form>
-        <div className="  mt-16 bg-white items-center w-auto p-2 rounded-xl">
-          {/* <img className="w-48 h-48" src={transf} alt="" /> */}
-        </div>
-        <p className="mt-2">Fill your Amount And Number To</p>
-        <p className="items-center ">Transfer The Fund</p>
+        <p className="mt-4 text-white font-bold">Fill your Amount and Number to Transfer the Fund</p>
       </div>
-    </>
+    </div>
   );
 }
+
 export default Transfer;

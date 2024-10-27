@@ -205,31 +205,42 @@ function TripplePana() {
   };
 
   const calculateTimeLeft = () => {
-    const openTimeWithoutSuffix = openTime.replace(/\s[AaPp][Mm]$/, "");
-    const openDateString = new Date().toLocaleDateString('en-CA'); // ISO format YYYY-MM-DD
-    const open = `${openDateString}T${openTimeWithoutSuffix}`;
-    
-    const openDate = new Date(open);
-    
-    // Check if openDate is valid
-    if (isNaN(openDate.getTime())) {
-        console.error("Invalid date:", open);
-        return;
-    }
-
-    const openMillisec = openDate.getTime(); // Use getTime() for milliseconds
-    console.log("time1", openMillisec);
-    console.log("time2", Date.now());
-    if (openMillisec <= Date.now()) {
-        setIsOpen(false);
-        setSelectedOption("close");
-    }
-    else {
+    // Function to convert 12-hour format (e.g., "10:59 PM") to 24-hour format ("22:59")
+    const convertTo24Hour = (time12h) => {
+      const [time, modifier] = time12h.split(' ');
+      let [hours, minutes] = time.split(':');
+  
+      if (modifier.toLowerCase() === 'pm' && hours !== '12') {
+        hours = (parseInt(hours, 10) + 12).toString();
+      }
+      if (modifier.toLowerCase() === 'am' && hours === '12') {
+        hours = '00';
+      }
+      return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    };
+  
+    // Convert openTime to 24-hour format
+    const openTime24Hour = convertTo24Hour(openTime);
+    console.log("Converted open time (24-hour):", openTime24Hour);
+  
+    // Get the current clock time (HH:MM)
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours().toString().padStart(2, '0');
+    const currentMinutes = currentTime.getMinutes().toString().padStart(2, '0');
+    const currentTimeOnly = `${currentHours}:${currentMinutes}`;
+  
+    console.log("Current time (HH:MM):", currentTimeOnly);
+  
+    // Compare the converted open time and current time
+    if (openTime24Hour <= currentTimeOnly) {
+      setIsOpen(false);
+      setSelectedOption("close");
+    } else {
       setIsOpen(true);
       setSelectedOption("open");
     }
-};
-
+  };
+  const totalPoints=submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0)
   return (
     <>  
       <div style={backStyle} className="text-white bg-my-gradient-1">
@@ -287,13 +298,13 @@ function TripplePana() {
                 </label>
               </div>
             </div>
-            <p className="mt-2 ml-2 font-bold text-white">{isOpen ? "Open Pana" : "Close Pana"}</p>
+            <p className="mt-2 ml-2 font-bold text-white">{selectedOption === "open" ? "Open Pana" : "Close Pana"}</p>
             <input
               type="number"
               inputMode="numeric"
               ref={digit}
               placeholder="Enter Pana"
-              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-white"
+              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black"
               list="digitList" // Step 2: Add list attribute
               autoComplete="off"
             />{" "}
@@ -308,7 +319,7 @@ function TripplePana() {
               inputMode="numeric"
               ref={point}
               placeholder="Enter Points"
-              className="shadow-md border w-full  py-2 px-4 border-black-500 rounded-xl text-white"
+              className="shadow-md border w-full  py-2 px-4 border-black-500 rounded-xl text-black"
             />
             <div className="flex  mb-4 text-white">
               <button
@@ -336,6 +347,7 @@ function TripplePana() {
                       gameId={gameId}
                       gameName={gameName}
                       pana={pana}
+                      gametype={selectedOption==="open" ? "Open" : "Close"}
                       date={formattedDate}
                       clearSubmittedData={clearSubmittedData}
                     />
@@ -369,11 +381,11 @@ function TripplePana() {
               return (
                 <div key={index} className="w-full flex mb-3 ">
                   <div
-                    className="shadow-md border w-10/12  p-1 border-black-500 bg-white text-white flex justify-between"
+                    className="shadow-md border w-10/12  p-1 border-black-500 bg-white text-black flex justify-between"
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>{isOpen ? "Open Pana" : "Close Pana"}</h3>
+                      <h3>{selectedOption==="open" ? "Open Pana" : "Close Pana"}</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">

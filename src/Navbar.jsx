@@ -43,6 +43,7 @@ import { IoMdPeople } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { RiUser3Fill } from "react-icons/ri";
 import { FaDownload } from "react-icons/fa6";
+import { BiColor } from "react-icons/bi";
 function Navbar() {
   const Hamburg = {
     transform: "translateY(3px)",
@@ -104,9 +105,16 @@ function Navbar() {
     <nav className=" text-white relative p-2" style={{background :'rgba(30,50,35,255)'}}>
       <div className="container flex mx-auto flex-1 justify-between items-center ">
         <div className="flex items-center ">
-          <div onClick={handleHamburgerClick} style={Hamburg} className="mr-4">
+          {/* <div onClick={handleHamburgerClick} style={Hamburg} className="mr-4">
             <img src={HamburgerIcon} alt="Hamburger Icon" className="w-8 h-8" />
+          </div> */}
+
+          <div onClick={handleHamburgerClick} style={Hamburg} className="mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" viewBox="0 0 24 24" fill="black">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="white" strokeWidth="2" />
+            </svg>
           </div>
+
 
           <div className="text-xl fading-text">
             <div className="w-40 flex items-center text-white font-bold ">
@@ -221,6 +229,17 @@ function Navbar() {
             </li>
 
             {/* <li className="">
+            <NavLink
+              to="https://www.youtube.com/watch?v=5-VVCw8rPMY" 
+              className="flex py-2 px-4 hover:bg-white hover:text-black rounded-lg"
+              onClick={handleSidebarItemClick}
+            >
+              <img src={question} alt="How to Play" className="w-8 h-6 ml-3 mr-2" />
+              How to Play
+            </NavLink>
+          </li> */}
+
+            <li className="">
               <NavLink
                 to="/htp"
                 className= "flex   py-2 px-4 hover:bg-white hover:text-black rounded-lg"
@@ -229,7 +248,7 @@ function Navbar() {
                 <FaBookOpen className="w-8 h-6 ml-3 mr-2" />
                 How To Play
               </NavLink>
-            </li> */}
+            </li>
             <li className="">
               <NavLink
                 to="/gameRates"

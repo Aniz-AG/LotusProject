@@ -47,7 +47,7 @@ function StarGame() {
             <button
               onClick={() => {
                 if (gameId) {
-                  navigate("/single", { state: { gameId, openTime, gameName, pana: 'Single Digit' } });
+                  navigate("/StarSingle", { state: { gameId, openTime, gameName, pana: 'Single Digit' } });
                 }
               }}>
               <img src={SingleDigit} style={imgStyle} className="rounded-xl" />
@@ -57,7 +57,7 @@ function StarGame() {
             <button
               onClick={() => {
                 if (gameId) {
-                  navigate("/singlepana", { state: { gameId, openTime, gameName, pana: 'Single Pana' } });
+                  navigate("/Ssinglepana", { state: { gameId, openTime, gameName, pana: 'Single Pana' } });
                 }
               }}>
               <img src={SinglePanna} style={imgStyle} className="rounded-xl" />
@@ -67,7 +67,7 @@ function StarGame() {
             <button
               onClick={() => {
                 if (gameId) {
-                  navigate("/doublepana", { state: { gameId, openTime, gameName, pana: 'Double Pana' } });
+                  navigate("/Sdoublepana", { state: { gameId, openTime, gameName, pana: 'Double Pana' } });
                 }
               }}>
               <img src={DoublePanna} style={imgStyle} className="rounded-xl" />
@@ -77,7 +77,7 @@ function StarGame() {
             <button
               onClick={() => {
                 if (gameId) {
-                  navigate("/tripplepana", { state: { gameId, openTime, gameName, pana: 'Jodi Digit' } });
+                  navigate("/Stripplepana", { state: { gameId, openTime, gameName, pana: 'Triple Pana' } });
                 }
               }}>
               <img src={TriplePanna} style={imgStyle} className="rounded-xl" />

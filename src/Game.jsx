@@ -1,21 +1,9 @@
-import { BiArrowBack } from "react-icons/bi";
-import url1 from "./Images/single_digit.png";
-import url2 from "./Images/jodi_digit.png";
-import url3 from "./Images/single_panna.png";
-import url4 from "./Images/double_panna.png";
-import url5 from "./Images/triple_panna.png";
-import url6 from "./Images/half_sangam.png";
-import url7 from "./Images/full_sangam.png";
-import topBackground from "./Images/bg.png";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
-import { FaDiceOne } from "react-icons/fa6";
-import { CgCardSpades } from "react-icons/cg";
-import { TbCards } from "react-icons/tb";
-import { PiCardsBold } from "react-icons/pi";
-import { MdHourglassFull } from "react-icons/md";
-import { MdHourglassBottom } from "react-icons/md";
-import { FaDice } from "react-icons/fa6";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./Modal.css";
 import SingleDigit from "./assets/ICONS AND BACKGROUNDS/SINGLE DIGIT.png"
 import JodiDigit from './assets/ICONS AND BACKGROUNDS/JODI DIGIT.png'
 import SinglePanna from './assets/ICONS AND BACKGROUNDS/SINGLE PANNA.png'
@@ -52,11 +40,47 @@ function Game() {
   }
 
   const { gameId, openTime, gameName } = useLocation().state;
+  const [isModalOpen,setModalOpen]=useState(false);
+  const [modalMessage,setModalMessage]=useState("");
 
+  const convertTo24Hour = (time12h) => {
+    const [time, modifier] = time12h.split(' ');
+    let [hours, minutes] = time.split(':');
+
+    if (modifier.toLowerCase() === 'pm' && hours !== '12') {
+      hours = (parseInt(hours, 10) + 12).toString();
+    }
+    if (modifier.toLowerCase() === 'am' && hours === '12') {
+      hours = '00';
+    }
+    return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+  };
+
+  // Convert openTime to 24-hour format
+  const openTime24Hour = convertTo24Hour(openTime);
+  console.log("Converted open time (24-hour):", openTime24Hour);
+  
+    // Get the current clock time (HH:MM)
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours().toString().padStart(2, '0');
+    const currentMinutes = currentTime.getMinutes().toString().padStart(2, '0');
+    const currentTimeOnly = `${currentHours}:${currentMinutes}`;
+  
+    console.log("Current time (HH:MM):", currentTimeOnly);
+
+  const checkTimeAndNavigate=(route,panaName)=>{
+    if(openTime24Hour<=currentTimeOnly){
+      const notify=toast(`Bidding is closed for ${panaName}`);
+      notify();
+    }
+    else{
+      navigate(route, { state: { gameId: gameId, openTime: openTime, gameName: gameName, pana: panaName } });
+    }
+  }
   const imgStyle = {
     width: "120px",
     height: "115px", 
-    borderRadius: "10px", // Slight rounding for a smooth look
+    borderRadius: "10px",
     boxShadow: "0 0 5px rgba(0, 255, 0, 0.7)",
   };
 
@@ -78,10 +102,7 @@ function Game() {
           <div className="flex justify-center items-center rounded-xl">
             <button
               onClick={() => {
-                if (gameId) {
-                  console.log(gameId)
-                  navigate("/jodi", { state: { gameId: gameId, openTime: openTime, gameName: gameName, pana: 'Jodi Digit' } });
-                }
+                checkTimeAndNavigate("/jodi", 'Jodi Digit');
               }}>
               <img src={JodiDigit} style={imgStyle} className="rounded-xl" />
             </button>
@@ -122,12 +143,9 @@ function Game() {
             </button>
           </div>
           <div className="flex justify-center items-center rounded-xl">
-            <button
+          <button
               onClick={() => {
-                if (gameId) {
-                  console.log(gameId)
-                  navigate("/halfsangam", { state: { gameId: gameId, openTime: openTime, gameName: gameName, pana: 'Half Sangam' } });
-                }
+                checkTimeAndNavigate("/halfsangam", 'Half Sangam');
               }}>
               <img src={HalfSangam} style={imgStyle} className="rounded-xl" />
             </button>
@@ -136,10 +154,7 @@ function Game() {
           <div className="flex justify-center items-center rounded-xl">
             <button
               onClick={() => {
-                if (gameId) {
-                  console.log(gameId)
-                  navigate("/fullsangam", { state: { gameId: gameId, openTime: openTime, gameName: gameName, pana: 'Full Sangam' } });
-                }
+                checkTimeAndNavigate("/fullsangam", 'Full Sangam');
               }}>
               <img src={FullSangam} style={imgStyle} className="rounded-xl" />
             </button>

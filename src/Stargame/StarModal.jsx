@@ -1,7 +1,6 @@
 import "../Modal.css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
@@ -18,8 +17,7 @@ const StarModal = ({
   clearSubmittedData,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-console.log(pana)
-console.log("starrr")
+console.log("Pana:",pana)
   const navigate = useNavigate();
   const notify = () => {
     toast("Bid Successfully Placed");
@@ -33,25 +31,19 @@ console.log("starrr")
   }, []);
 
   const token = useSelector((state) => state.userDetail.token);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isSubmitting) { // Check if form is already being submitted
+    if (!isSubmitting) {
       setIsSubmitting(true);
     try {
-      await fetchData(
-        token,
-        gameId,
-        submittedData,
-        gameName,
-        pana,
-        totalPoints,
-        date
-      );
+      const res=await fetchData(token,gameId,submittedData,gameName,pana,totalPoints,date);
+      console.log("Response:",res);
       notify();
       closeModal(); // Close the modal here
       clearSubmittedData()
     } catch (error) {
-
+          console.log(`ERROR:${error}`);
     }
     finally {
       setIsSubmitting(false); // Reset submitting state to false
@@ -59,22 +51,9 @@ console.log("starrr")
   }
   };
 
-  const fetchData = async (
-    token,
-    gameId,
-    submittedData,
-    gameName,
-    pana,
-    totalPoints,
-    date
-  ) => {
+  const fetchData = async (token, gameId, submittedData, gameName, pana, totalPoints, date) => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append(
-      "Cookie",
-      "ci_session=7c38fc1fc455fca9846d688fb8343f5c7ea71bee"
-    );
-
     const raw = JSON.stringify({
       env_type: "Prod",
       app_key: "jAFaRUulipsumXLLSLPFytYvUUsgfh",
@@ -91,27 +70,38 @@ console.log("starrr")
         result: submittedData,
       },
     });
-
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
       redirect: "follow",
     };
-
-    const response = await fetch(
-      "https://lotus365matka.in/api-starline-submit-bid",
-      requestOptions
-    );
-    const result = await response.json();
-
-    if (result?.status === true) {
-
-      // notify();
-    } else {
-      throw new Error("Invalid username and password");
+    try {
+      const response = await fetch(
+        "https://lotus365matka.in/api-starline-submit-bid",
+        requestOptions
+      );
+      if (!response.ok) {
+        // Log the status code and the status text for debugging
+        console.error("HTTP Error:", response.status, response.statusText);
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      console.log("Response result:", result);
+      if (result?.status === true) {
+        // Handle success
+        return result;
+      } else {
+        // Handle invalid status in the API response
+        console.error("API Error:", result.message || "Unknown error");
+        throw new Error(result.message || "Invalid username and password");
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error.message);
+      throw error;
     }
   };
+
 
   return (
     <>
@@ -133,7 +123,7 @@ console.log("starrr")
           </div>
           <div className="flex flex-col">
             <p>Game Type</p>
-            <p className="text-center">Close</p>
+            <p className="text-center">-</p>
           </div>
         </div>
         <div className="flex justify-around mt-2 text-white">

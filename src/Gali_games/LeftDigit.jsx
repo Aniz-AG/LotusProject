@@ -17,7 +17,7 @@ function LeftDigit() {
     "January", "February", "March", "April", "May", "June", "July", "August",
     "September", "October", "November", "December"
   ];
-  
+
   const newDate = new Date();
   const day = newDate.getDate();
   const monthIndex = newDate.getMonth();
@@ -39,15 +39,13 @@ function LeftDigit() {
   };
   
   const cardStyle = {
-    width: "320px", // Reduced width
+    width: "320px",
     display: "flex",
     flexDirection: "column",
-    padding: "10px", // Reduced padding
+    padding: "10px",
   };
-  
 
   const digit = useRef();
-  const date = useRef();
   const point = useRef();
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
@@ -67,7 +65,6 @@ function LeftDigit() {
     setSubmittedData([]); // Function to clear submittedData
   };
 
-  const [isOpen, setIsOpen] = useState(true);
   const { gameId, openTime, gameName, pana } = useLocation().state;
 
   const handleSubmit = (e) => {
@@ -95,11 +92,7 @@ function LeftDigit() {
       const newWalletAmt = walletAmt - point.current.value;
 
       setWalletAmt(newWalletAmt);
-
-      setSubmittedData((prevData) => {
-        const updatedData = [...prevData, newDataObject];
-        return updatedData;
-      });
+      setSubmittedData((prevData) => [...prevData, newDataObject]);
       setDigitValue("");
       setPointValue("");
     }
@@ -130,6 +123,8 @@ function LeftDigit() {
     return errors;
   };
 
+  const totalPoints = submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0);
+
   return (
     <>
       <div style={backStyle} className="text-white bg-my-gradient-1">
@@ -148,8 +143,7 @@ function LeftDigit() {
               inputMode="numeric"
               ref={digit}
               placeholder="Enter Digits"
-              className="shadow-md w-full px-4 py-2 border rounded-xl text-white bg-white border-white-500"
-               // Apply the gradient style here
+              className="shadow-md w-full px-4 py-2 border rounded-xl text-black bg-white border-white-500"
               list="digitList"
               autoComplete="off"
             />
@@ -164,8 +158,7 @@ function LeftDigit() {
               inputMode="numeric"
               ref={point}
               placeholder="Enter Points"
-              className="shadow-md w-full px-4 py-2 border rounded-xl text-white bg-white border-white-500"
-               // Apply the gradient style here
+              className="shadow-md w-full px-4 py-2 border rounded-xl text-black bg-white border-white-500"
             />
             <div className="flex mb-4 text-white">
               <button
@@ -188,11 +181,11 @@ function LeftDigit() {
                     <GaliModal
                       closeModal={closeModal}
                       totalIndex={submittedData.length}
-                      totalPoints={submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0)}
+                      totalPoints={totalPoints}
                       submittedData={submittedData}
                       gameId={gameId}
                       gameName={gameName}
-                      pana={pana}
+                      pana="Left Digit"
                       date={formattedDate}
                       clearSubmittedData={clearSubmittedData}
                     />
@@ -203,11 +196,11 @@ function LeftDigit() {
             {submittedData.map((data, index) => (
               <div key={index} className="w-full flex mb-3">
                 <div
-                  className="shadow-md w-10/12 p-1 border border-white-500 bg-white border-white-500 text-white flex justify-between"
+                  className="shadow-md w-10/12 p-1 border border-white-500 bg-white border-white-500 text-black flex justify-between"
                   style={{ borderRadius: "25px" }}
                 >
                   <div className="flex flex-col items-center ml-4">
-                    <h3>Close Digit</h3>
+                    <h3>Digit</h3>
                     <h3>{data.digits}</h3>
                   </div>
                   <div className="flex flex-col items-center mr-4">
@@ -232,7 +225,7 @@ function LeftDigit() {
                     }
                   }}
                 >
-                  <TrashIcon className="h-5 w-5 text-white" />
+                  <TrashIcon className="h-6 w-6 text-red-500" />
                 </button>
               </div>
             ))}

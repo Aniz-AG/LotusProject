@@ -1,11 +1,12 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector} from "react-redux";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { register } from "./Util/registerSlice";
 import bgImage from "./assets/ICONS AND BACKGROUNDS/login signup back.png";
 import logo from "./assets/ICONS AND BACKGROUNDS/Transparent logo.png";
-import whatsapp from './assets/ICONS AND BACKGROUNDS/whatsapp.png'; // Import the WhatsApp icon
+import whatsapp from './assets/ICONS AND BACKGROUNDS/whatsapp.png';
+import useGameFront from "./Hooks/useGameFront";
 
 function Register() {
   const cardStyle = {
@@ -27,6 +28,19 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const token = useSelector((state) => state.userDetail.token);
+
+  const resinfo = useGameFront(token);
+
+  const [adminPhone, setAdminPhone] = useState('');
+
+  useEffect(() => {
+    if (resinfo) {
+      setAdminPhone(resinfo["mobile_1"] || "1234567890"); // Fallback if no mobile is found
+    }
+  }, [resinfo]);
+  const whatsappUrl = `https://wa.me/${adminPhone}`;
+  
   const handleToggleCurrentPassword = () => {
     setShowCurrentPassword(!showCurrentPassword);
   };
@@ -62,7 +76,7 @@ function Register() {
         }));
         navigate('/Otp');
       } else {
-        setErrorMsg("Failed to fetch OTP data");
+        setErrorMsg("User Alredy Registered");
       }
     } catch (error) {
       setErrorMsg("Error registering: " + error.message);
@@ -118,10 +132,6 @@ function Register() {
       setIsSubmitting(false);
     }
   };
-
-  // WhatsApp phone number for contacting admin
-  const phoneNumber = "1234567890";
-  const whatsappUrl = `https://wa.me/${phoneNumber}`;
 
   return (
     <div style={{

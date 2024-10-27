@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import DatePickerButton from "../Date";
+import DatePickerButton from "../Date"; // Ensure this component is properly styled
 
 function Win({ onDataFetch }) {
   const navigate = useNavigate();
@@ -23,7 +23,8 @@ function Win({ onDataFetch }) {
     setSelectedEndDate(date);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent form submission default behavior
     if (isSubmitting) return; // Prevent duplicate submissions
 
     setIsSubmitting(true);
@@ -56,9 +57,13 @@ function Win({ onDataFetch }) {
         }),
       }
     );
+
     const result = await response.json();
-    if (result?.status === true) onDataFetch(true, result);
-    else onDataFetch(false, null);
+    if (result?.status === true) {
+      onDataFetch(true, result);
+    } else {
+      onDataFetch(false, null);
+    }
   };
 
   const changedate = (selectedDate) => {
@@ -69,28 +74,26 @@ function Win({ onDataFetch }) {
   return (
     <div className="shadow-md p-4 bg-transparent">
       <h1 className="font-bold text-lg text-center mb-4 text-white">WIN HISTORY</h1>
-      <div className="flex justify-center bg-my">
-        <form className="shadow-md rounded-lg bg-transparent w-[90vw]">
-          <p className="font-bold ml-2 text-sm text-white">From Date</p>
-          <DatePickerButton 
-            selectedDate={selectedDate} 
-            onDateChange={handleDateChange} 
-            className="w-full rounded-full text-white"
-          />
-          <p className="mt-4 ml-2 font-bold text-sm text-white">To Date</p>
-          <DatePickerButton 
-            selectedDate={selectedEndDate} 
-            onDateChange={handleEndDateChange} 
-            className="w-full rounded-full text-white"
-          />
-          <div className="flex justify-center">
-            <button
-              className="p-2 mt-4 border rounded w-full bg-yellow-600 hover:bg-yellow-500 transition duration-200 ease-in-out text-white"
-              onClick={handleSubmit}
-              disabled={isSubmitting} // Disable button when submitting
-            >
-              {isSubmitting ? "Submitting..." : "Submit"}
-            </button>
+      <div className="text-black">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center">
+          <div className="shadow-md" style={{ width: '300px', display: 'flex', flexDirection: 'column', padding: '5px' }}>
+            <p className="font-bold text-sm text-white ml-2">From Date</p>
+            <DatePickerButton selectedDate={selectedDate} onDateChange={handleDateChange} />
+            <p className="mt-1 font-bold text-sm text-white ml-2">To Date</p>
+            <DatePickerButton 
+              selectedDate={selectedEndDate} 
+              onDateChange={handleEndDateChange} 
+              className="w-full rounded text-white text-sm" // Reduced size
+            />
+            <div className="flex justify-center">
+              <button
+                type="submit" // Ensure button submits the form
+                className="p-2 mt-4 border rounded w-full bg-yellow-600 hover:bg-yellow-500 transition duration-200 ease-in-out text-white"
+                disabled={isSubmitting} // Disable button when submitting
+              >
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </button>
+            </div>
           </div>
         </form>
       </div>

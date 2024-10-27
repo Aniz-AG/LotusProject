@@ -45,19 +45,19 @@
     z-index:5;
   }
 
-  .sidebar{
-    position :fixed;
-    top:0;
-    left:0;
-    width :70%;
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 70%;
     max-width: 18rem;
-    height:100%;
-    transition: all 1s cubic-bezier(0.075,0.82,0.165,1);
-    box-shadow: 0 0 4px rgba(0.0,0.2);
+    height: 100%;
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
     transform: translateX(-100%);
-    z-index:5;
-  }
-
+    z-index: 5;
+    background-color: white; /* Set background color to white */
+}
   .sidebar_profile{
     padding: 1rem 1.5rem;
     display: flex;

@@ -15,27 +15,42 @@ function IMP3() {
   };
 
   return (
-    <div className="bg-my-gradient-1 min-h-screen p-5"> {/* Apply the gradient background */}
-      <div className="relative">
-        <div className="sticky top-0">
-          <Win onDataFetch={handleDataFetch} /> {/* Pass the function as prop */}
-          
-          <div className="text-black">
-            {fetchResultStatus && fetchResultData ? (
-              fetchResultData.win_data.map((item, index) => (
-                <Windata key={index} data={item} />
-              ))
-            ) : (
-              <div className="flex flex-col justify-center items-center py-5"> 
-                <div className="flex items-start justify-center">
-                  <GoCircleSlash className="w-16 h-16 text-blue-500" />
-                </div>
-                <p className="text-lg font-bold">NO DATA FOUND</p> {/* Bold text for no data found */}
-              </div>
-            )}
-          </div>
-        </div>
+    <div className="relative bg-my-gradient-1 h-screen flex flex-col"> {/* Full height with flexbox */}
+      {/* Fixed Date Selector Section */}
+      <div className="sticky top-0">
+        <Win onDataFetch={handleDataFetch} /> {/* Pass the function as prop */}
       </div>
+
+      {/* Scrollable Data Section */}
+      <div className="flex-grow overflow-y-auto"> {/* Allow this section to grow and be scrollable */}
+        {fetchResultStatus && fetchResultData ? (
+          fetchResultData.win_data.length > 0 ? (
+            fetchResultData.win_data.map((item, index) => (
+              <Windata key={index} data={item} />
+            ))
+          ) : (
+            <div className="flex flex-col justify-center items-center py-5"> 
+              <div className="flex items-start justify-center">
+                <GoCircleSlash className="w-16 h-16 text-blue-500" />
+              </div>
+              <p className="text-lg font-bold">NO DATA FOUND</p> {/* Bold text for no data found */}
+            </div>
+          )
+        ) : (
+          <div className="flex flex-col justify-center items-center py-5"> 
+            <div className="flex items-start justify-center">
+              <GoCircleSlash className="w-16 h-16 text-blue-500" />
+            </div>
+            <p className="text-lg font-bold">NO DATA FOUND</p> {/* Bold text for no data found */}
+          </div>
+        )}
+      </div>
+
+      {/* Fixed Footer */}
+      {/* <footer className="bg-white p-4 text-center"> Ensure footer is fixed at the bottom */}
+        {/* Your footer content here */}
+        {/* <p>Footer Content Here</p> */}
+      {/* </footer> */}
     </div>
   );
 }

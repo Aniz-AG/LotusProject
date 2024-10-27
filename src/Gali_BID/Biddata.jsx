@@ -3,10 +3,7 @@ function Biddata({ data }) {
     <>
       <div className="mb-5 mt-5 -z-4 ">
     
-        {/* Conditional rendering using logical && operator */}
-
-
-        {data.pana === "Single Pana" && (
+          {data.pana === "Left Digit" && (
           <div className="bg-white border-black  text-black mr-2 ml-4 z-2 -mt-1 p-1 flex justify-between align-middle border rounded-2xl  pl-4 pr-5">
             <div className="flex flex-col">
             <p className="font-bold"> {data.game_name}</p>
@@ -40,7 +37,7 @@ function Biddata({ data }) {
         </div>
         )}
 
-        {data.pana === "Triple Pana" && (
+        {data.pana === "Jodi Digit" && (
           <div className="bg-white border-black  text-black mr-2 ml-4 z-2 -mt-1 p-1 flex justify-between align-middle border rounded-2xl  pl-4 pr-5">
           <div className="flex flex-col">
           <p className="font-bold"> {data.game_name}</p>

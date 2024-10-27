@@ -197,7 +197,7 @@ function LandingNavbar() {
 
             <li className="">
               <NavLink
-                to="/login"
+                to="/htp"
                 className= "flex   py-2 px-4 hover:bg-white hover:text-black rounded-lg"
               >
                 <FaBookOpen className="w-8 h-6 ml-3 mr-2" />

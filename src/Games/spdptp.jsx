@@ -10,8 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MyModal from "../ShowModal.jsx";
 
-function SinglePana() {
-  const singlePanaArray = [
+function Spdptp() {
+  const SpdptpArray = [
     "120",
     "123",
     "124",
@@ -193,7 +193,7 @@ function SinglePana() {
   const closeModal = () => setShowModal(false);
   const clearSubmittedData = () => {
     setIsProceed(false);
-    setSubmittedData([]);
+    setSubmittedData([]); // Function to clear submittedData
   };
 
   const [isOpen, setIsOpen] = useState(true);
@@ -268,8 +268,9 @@ function SinglePana() {
     } else {
       setIsProceed(true);
       setFormErrors({});
-      const sessionValue =selectedOption;
-      console.log("Session Value:",sessionValue);
+      const sessionValue = document.getElementById("option2").checked
+        ? "open"
+        : "close";
       const newDataObject = {
         digits: digit.current.value,
         closedigits: "",
@@ -282,10 +283,9 @@ function SinglePana() {
 
       setSubmittedData((prevData) => {
         const updatedData = [...prevData, newDataObject];
-        console.log("Updated Data",updatedData);
+        console.log(submittedData);
         return updatedData;
       });
-      console.log("Submitted data=",submittedData);
       setDigitValue("");
       setPointValue("");
     }
@@ -302,7 +302,7 @@ function SinglePana() {
     const errors = {};
     if (!digit) {
       errors.digit = "Please enter the number";
-    } else if (!singlePanaArray.includes(digit)) {
+    } else if (!SpdptpArray.includes(digit)) {
       errors.digit = `Number ${digit} is not valid`;
     }
     if (!point) {
@@ -314,6 +314,7 @@ function SinglePana() {
     }
     return errors;
   };
+
   const calculateTimeLeft = () => {
     // Function to convert 12-hour format (e.g., "10:59 PM") to 24-hour format ("22:59")
     const convertTo24Hour = (time12h) => {
@@ -333,9 +334,11 @@ function SinglePana() {
     const openTime24Hour = convertTo24Hour(openTime);
     console.log("Converted open time (24-hour):", openTime24Hour);
   
-    // Get the current time (HH:MM)
+    // Get the current clock time (HH:MM)
     const currentTime = new Date();
-    const currentTimeOnly = currentTime.toTimeString().slice(0, 5);
+    const currentHours = currentTime.getHours().toString().padStart(2, '0');
+    const currentMinutes = currentTime.getMinutes().toString().padStart(2, '0');
+    const currentTimeOnly = `${currentHours}:${currentMinutes}`;
   
     console.log("Current time (HH:MM):", currentTimeOnly);
   
@@ -348,17 +351,11 @@ function SinglePana() {
       setSelectedOption("open");
     }
   };
-  const totalPoints=submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0)
-  // Handle option change to update the text "Open Pana" or "Close Pana"
-const handleOptionChange = (option) => {
-  setSelectedOption(option);
-};
-  
-  
+
   return (
     <>  
       <div style={backStyle} className="text-white bg-my-gradient-1">
-      <div className="font-bold flex items-center justify-center text-lg underline pt-2 ml-2"><h1>Single Pana</h1></div>
+      <div className="font-bold flex items-center justify-center text-lg underline pt-2 ml-2"><h1>SP DP TP</h1></div>
         <div className="flex justify-center items-center pt-5 ">
           <div className="" style={cardStyle}>
             <input
@@ -397,7 +394,7 @@ const handleOptionChange = (option) => {
                     Open
                   </label>
                 </div>
-              )}
+              )} 
               <div className="shadow-md flex justify-center items-center w-1/2 border border-black-500 px-4 py-2 bg-white rounded-xl">
                 <input
                   type="radio"
@@ -411,23 +408,64 @@ const handleOptionChange = (option) => {
                   Close
                 </label>
               </div>
+            </div> 
+
+
+
+
+            {/* Checkboxes for Sp, Dp, and Tp */}
+            <div className="mt-4 flex justify-center items-center space-x-4 text-white text-2xl">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="spCheckbox"
+                  name="sp"
+                  value="sp"
+                  className="form-checkbox text-blue-500 focus:ring-2 focus:ring-blue-500 w-4 h-4"
+                  onChange={(e) => setSpChecked(e.target.checked)} // Handle the checkbox state
+                />
+                <label htmlFor="spCheckbox" className="ml-2">SP</label>
+              </div>
+              
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="dpCheckbox"
+                  name="dp"
+                  value="dp"
+                  className="form-checkbox text-blue-500 focus:ring-2 focus:ring-blue-500 w-4 h-4"
+                  onChange={(e) => setDpChecked(e.target.checked)} // Handle the checkbox state
+                />
+                <label htmlFor="dpCheckbox" className="ml-2">DP</label>
+              </div>
+              
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="tpCheckbox"
+                  name="tp"
+                  value="tp"
+                  className="form-checkbox text-blue-500 focus:ring-2 focus:ring-blue-500 w-4 h-4"
+                  onChange={(e) => setTpChecked(e.target.checked)} // Handle the checkbox state
+                />
+                <label htmlFor="tpCheckbox" className="ml-2">TP</label>
+              </div>
             </div>
 
 
 
-             {/* Display text based on the selected option */}
-          <p className="mt-2 ml-2 font-bold text-white">{selectedOption === "open" ? "Open Pana" : "Close Pana"}</p>
+            <p className="mt-2 ml-2 font-bold text-white">{selectedOption === "open" ? "Open Pana" : "Close Pana"}</p>
             <input
               type="number"
               inputMode="numeric"
               ref={digit}
               placeholder="Enter Pana"
               className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black"
-              list="digitList" 
+              // list="digitList" // Step 2: Add list attribute
               autoComplete="off"
             />
             <datalist id="digitList">
-              {singlePanaArray.map((digit, index) => (
+              {SpdptpArray.map((digit, index) => (
                 <option key={index} value={digit} />
               ))}
             </datalist>
@@ -503,7 +541,7 @@ const handleOptionChange = (option) => {
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>{selectedOption==="open" ? "Open Pana" : "Close Pana"}</h3>
+                      <h3>{isOpen ? "Open Pana" : "Close Pana"}</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">
@@ -516,7 +554,7 @@ const handleOptionChange = (option) => {
                     style={{ borderRadius: "20px" }}
                     onClick={handleClickRemoveDiv(index)}
                   >
-                    <TrashIcon className="h-6 w-6 text-red-500" />
+                    <TrashIcon className="h-100 w-100 text-red-500" />
                   </button>
                 </div>
               );
@@ -527,4 +565,4 @@ const handleOptionChange = (option) => {
     </>
   );
 }
-export default SinglePana;
+export default Spdptp;

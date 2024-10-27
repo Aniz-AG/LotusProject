@@ -21,3 +21,7 @@ export const forgotPasswordSlice = createSlice({
 export const { setOtpDetails, removeOtpDetails } = forgotPasswordSlice.actions;
 
 export default forgotPasswordSlice.reducer;
+
+
+
+      

@@ -287,7 +287,7 @@ function JodiDigit() {
                     submittedData={submittedData}   
                     gameId={gameId} 
                     gameName= {gameName}
-                    pana= {pana}
+                    pana= "Jodi Digit"
                     date={formattedDate}
                     clearSubmittedData={clearSubmittedData}
                   />)}
@@ -324,7 +324,7 @@ function JodiDigit() {
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Close Digit</h3>
+                      <h3>Digit</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">

@@ -9,8 +9,9 @@ import useGameFront from "../Hooks/useGameFront";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import MyModal from "../ShowModal.jsx"
+import Starline from "../Starline.jsx";
 
-function Single() {
+function Single({isStarline}) {
   const singleDigitArray = Array.from({ length: 10 }, (_, index) => index.toString());
   const todayDate = new Date().toISOString().split("T")[0];
   const months = [
@@ -125,8 +126,7 @@ function Single() {
   }, [openTime]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    
+    e.preventDefault();   
     
     setFormErrors({});
     const errors = validate(digit.current.value, point.current.value);
@@ -143,6 +143,7 @@ function Single() {
       setIsProceed(true);
       setFormErrors({});
       const sessionValue = document.getElementById("option2").checked ? "open" : "close";
+      console.log("Session Value:",sessionValue);
       const newDataObject = {
         digits: digit.current.value,
         closedigits: "",
@@ -150,7 +151,7 @@ function Single() {
         session: sessionValue,
       };
       const newWalletAmt = walletAmt - point.current.value;
-
+      console.log("New Wallet Amt",newWalletAmt);
       setWalletAmt(newWalletAmt);
 
       setSubmittedData((prevData) => {
@@ -158,6 +159,8 @@ function Single() {
         console.log(submittedData)
         return updatedData;
       });
+
+      // toast.success("Bid placed successfully!");
       setDigitValue("");
       setPointValue("");
     }
@@ -188,30 +191,42 @@ function Single() {
   };
 
   const calculateTimeLeft = () => {
-    const openTimeWithoutSuffix = openTime.replace(/\s[AaPp][Mm]$/, "");
-    const openDateString = new Date().toLocaleDateString('en-CA'); // ISO format YYYY-MM-DD
-    const open = `${openDateString}T${openTimeWithoutSuffix}`;
-    
-    const openDate = new Date(open);
-    
-    // Check if openDate is valid
-    if (isNaN(openDate.getTime())) {
-        console.error("Invalid date:", open);
-        return;
-    }
-
-    const openMillisec = openDate.getTime(); // Use getTime() for milliseconds
-    console.log("time1", openMillisec);
-    console.log("time2", Date.now());
-    if (openMillisec <= Date.now()) {
-        setIsOpen(false);
-        setSelectedOption("close");
-    }
-    else {
+    // Function to convert 12-hour format (e.g., "10:59 PM") to 24-hour format ("22:59")
+    const convertTo24Hour = (time12h) => {
+      const [time, modifier] = time12h.split(' ');
+      let [hours, minutes] = time.split(':');
+  
+      if (modifier.toLowerCase() === 'pm' && hours !== '12') {
+        hours = (parseInt(hours, 10) + 12).toString();
+      }
+      if (modifier.toLowerCase() === 'am' && hours === '12') {
+        hours = '00';
+      }
+      return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    };
+  
+    // Convert openTime to 24-hour format
+    const openTime24Hour = convertTo24Hour(openTime);
+    console.log("Converted open time (24-hour):", openTime24Hour);
+  
+    // Get the current clock time (HH:MM)
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours().toString().padStart(2, '0');
+    const currentMinutes = currentTime.getMinutes().toString().padStart(2, '0');
+    const currentTimeOnly = `${currentHours}:${currentMinutes}`;
+  
+    console.log("Current time (HH:MM):", currentTimeOnly);
+  
+    // Compare the converted open time and current time
+    if (openTime24Hour <= currentTimeOnly) {
+      setIsOpen(false);
+      setSelectedOption("close");
+    } else {
       setIsOpen(true);
       setSelectedOption("open");
     }
-};
+  };
+
   const totalPoints=submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0)
   return (
     <> 
@@ -225,7 +240,7 @@ function Single() {
               readOnly
               className="border shadow-md w-full flex justify-center py-2 px-4 text-black font-bold  border-black-500 rounded-xl text-center"
             />
-            <p className="mt-2 ml-2 text-white font-bold">Choose Session</p>
+             <p className="mt-2 ml-2 text-white font-bold">Choose Session</p>
             <div className="flex space-x-4 justify-center items-center w-full ">
               
             {isOpen ? (
@@ -271,15 +286,17 @@ function Single() {
                 </label>
               </div>
             </div>
+            
 
-            <p className="mt-2 ml-2 text-white font-bold">Open Digit</p>
+
+            <p className="mt-2 ml-2 text-white font-bold">{selectedOption === "open" ? "Open Digit" : "Close Digit"}</p>
             <input
               type="number"
               inputMode="numeric"
               ref={digit}
               placeholder="Enter Digit"
-              className=" shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-white font-bold"
-              list="digitList" // Step 2: Add list attribute
+              className=" shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black font-bold"
+              list="digitList" 
               autoComplete="off" 
             />
             <datalist id="digitList">
@@ -293,7 +310,7 @@ function Single() {
               inputMode="numeric"
               ref={point}
               placeholder="Enter Points"
-              className=" shadow-md w-full  py-2 px-4 border border-black-500 rounded-xl text-white font-bold"
+              className=" shadow-md w-full  py-2 px-4 border border-black-500 rounded-xl text-black font-bold"
             />
             <div className="flex  mb-4 ">
               <button
@@ -321,6 +338,7 @@ function Single() {
                     gameId={gameId} 
                     gameName= {gameName}
                     pana= {pana}
+                    gametype={selectedOption==="open" ? "Open" : "Close"}
                     date={formattedDate}
                     clearSubmittedData={clearSubmittedData}
                   />)}
@@ -337,7 +355,6 @@ function Single() {
                 const removedItem = submittedData[indexToRemove];
                 const removedItemPoint = parseInt(removedItem.points);
                 
-                // Check if removedItemPoint is a valid number
                 if (!isNaN(removedItemPoint)) {
                   const newWalletAmt = walletAmt + removedItemPoint;
                   setWalletAmt(newWalletAmt);
@@ -353,11 +370,11 @@ function Single() {
               return (
                 <div key={index} className="w-full flex mb-3 ">
                   <div
-                    className="shadow-md w-10/12  p-1  border border-black-500 bg-white text-white font-bold flex justify-between"
+                    className="shadow-md w-10/12  p-1  border border-black-500 bg-white text-black font-bold flex justify-between"
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Close Digit</h3>
+                      <h3>{selectedOption==="open"?'Open Digit':'Close Digit'}</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">

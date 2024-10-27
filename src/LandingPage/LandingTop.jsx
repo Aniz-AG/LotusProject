@@ -74,7 +74,7 @@ function LandingTop() {
           {/* Animated text section */}
           <div className="flex justify-center mb-2 overflow-hidden shadow-sm">
             <p className="animate-marquee whitespace-nowrap bg-purple text-black font-bold text-sm px-4">
-              PLEASE DOWNLOAD OUR APP TO ADD AND WITHDRAW FAST(24X7)
+              PLEASE DOWNLOAD OUR ANDROID APPLICATION TO ADD AND WITHDRAW FAST(24X7)
             </p>
           </div>
 

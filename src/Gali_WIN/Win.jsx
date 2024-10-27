@@ -89,7 +89,7 @@ function Win({ onDataFetch }) {
   const back = () => navigate('/imp');
 
   return (
-    <div className="shadow-md z-10 ">
+    <div className="shadow-md">
     <div className="font-bold flex items-center justify-center text-lg mt-2 text-white"><h1>GALI DISAWAR WINS</h1></div>
     <div className="text-black">
       <div className="flex justify-center item-center p-1">

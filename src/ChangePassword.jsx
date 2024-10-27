@@ -42,8 +42,8 @@ function ChangePassword() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <form onSubmit={handleSubmit} className="bg-white p-5 shadow-md">
+    <div className="flex justify-center items-center h-screen bg-my-gradient-1">
+      <form onSubmit={handleSubmit} className="bg-my-gradient-1 p-5 shadow-md">
         <h1 className="text-3xl mb-5 text-center">Change Password</h1>
         <div>
           <label htmlFor="password" className="block mb-2">

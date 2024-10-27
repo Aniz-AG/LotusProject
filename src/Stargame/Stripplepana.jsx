@@ -38,7 +38,6 @@ function Stripplepana() {
   const [submit, setSubmit]= useState('');
 
   
-
   const navbarStyle = {
     height: "60px",
     display: "flex",
@@ -80,6 +79,7 @@ function Stripplepana() {
 
   const [isOpen, setIsOpen] = useState(true);
   const { gameId, openTime, gameName, pana } = useLocation().state;
+  console.log("Pana in triple pana of starline",pana);
   const fetchData = async () => {
     try {
       const myHeaders = new Headers();
@@ -133,8 +133,6 @@ function Stripplepana() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    
     setFormErrors({});
     const errors = validate(digit.current.value, point.current.value);
 
@@ -238,14 +236,14 @@ function Stripplepana() {
               readOnly
               className="shadow-md w-full flex justify-center p-4 text-black border border-black-500 rounded-xl text-center"
             />
-            <p className="mt-2 ml-2 font-bold text-white">Open Digit</p>
+            <p className="mt-2 ml-2 font-bold text-white">Digit</p>
             <input
               type="number"
               inputMode="numeric"
               ref={digit}
               placeholder="Enter Digit"
               className="shadow-md w-full p-4 border border-black-500 rounded-xl text-black"
-              list="digitList" // Step 2: Add list attribute
+              list="digitList"
               autoComplete="off" 
             />
             <datalist id="digitList">
@@ -323,7 +321,7 @@ function Stripplepana() {
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Close Digit</h3>
+                      <h3>Digit</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">

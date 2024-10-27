@@ -67,7 +67,7 @@ function Top() {
 
           <div className="flex justify-center mb-2 overflow-hidden shadow-sm">
             <p className="animate-marquee whitespace-nowrap bg-purple font-bold text-sm px-4 ">
-              PLEASE DOWNLOAD OUR APP TO ADD AND WITHDRAW FAST (24X7)
+            PLEASE DOWNLOAD ANDROID APPLICATION FOR FAST DEPOSIT AND FAST WITHDRAW (24×7)
             </p>
           </div>
 

@@ -149,27 +149,27 @@ function Changepass() {
   };
 
   return (
-    <>
-      <div className="font-bold flex items-center justify-center text-2xl mt-2 mb-2">
+    <div className="bg-my-gradient-1 h-[100vh] ">
+      <div className="  font-bold flex items-center justify-center text-white text-2xl mb-2">
         <h1>Change Password</h1>
       </div>
-      <div style={changePassStyle}>
+      <div style={changePassStyle} className="">
         <div className="flex justify-center items-center ">
           <form onSubmit={handleSubmit}>
             <div className="bg-transparent p-6 rounded-md shadow-md">
               <div className="mb-6 relative">
-                <label className="block mb-1 font-bold text-black">
+                <label className="block pl-3 font-bold text-white">
                   Current Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FiLock className="h-6 w-6 text-black" />
+                  <FiLock className="h-6 w-6" />
                   </div>
                   <input
                     type={showCurrentPassword ? "text" : "password"}
                     placeholder="Password"
                     ref={currentPassword}
-                    className="w-full rounded-md border-gray-300 bg-gray-300 focus:ring-indigo-500 focus:border-indigo-500 pl-10 p-3 text-black"
+                    className="w-full rounded-md bg-white pl-10 p-3 "
                     style={{ width: "300px" }}
                     name="password"
                   />
@@ -185,18 +185,18 @@ function Changepass() {
                 </div>
               </div>
               <div className="mb-6 relative">
-                <label className="block mb-1 font-bold text-black">
+                <label className="block pl-3 font-bold text-white">
                   New Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiLock className="h-6 w-6 text-black" />
+                    <FiLock className="h-6 w-6" />
                   </div>
                   <input
                     type={showNewPassword ? "text" : "password"}
                     placeholder="Enter New Password"
                     ref={newPassword}
-                    className="w-full rounded-md border-gray-300 bg-gray-300 focus:ring-indigo-500 focus:border-indigo-500 pl-10 p-3 text-black"
+                    className="w-full rounded-md bg-white pl-10 p-3"
                     style={{ width: "300px" }}
                     name="newPassword"
                   />
@@ -211,18 +211,18 @@ function Changepass() {
                 </div>
               </div>
               <div className="mb-6 relative">
-                <label className="block mb-1 font-bold text-black">
+                <label className="block pl-3 font-bold text-white">
                   Confirm New Password
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <FiLock className="h-6 w-6 text-black" />
+                    <FiLock className="h-6 w-6" />
                   </div>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Enter Confirm Password"
                     ref={confirmPassword}
-                    className="w-full rounded-md border-gray-300 bg-gray-300 focus:ring-indigo-500 focus:border-indigo-500 pl-10 p-3 text-black"
+                    className="w-full rounded-md bg-white pl-10 p-3"
                     style={{ width: "300px" }}
                     name="confirmPassword"
                   />
@@ -251,7 +251,7 @@ function Changepass() {
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

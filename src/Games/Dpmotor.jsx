@@ -8,116 +8,154 @@ import { useSelector } from "react-redux";
 import useGameFront from "../Hooks/useGameFront";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import StarModal from "./StarModal.jsx"
+import MyModal from "../ShowModal.jsx";
 
-function Sdoublepana() {
-  const singleDigitArray  = [
-    "100",
-    "110",
-    "112",
-    "113",
-    "114",
-    "115",
-    "116",
-    "117",
-    "118",
-    "119",
-    "122",
-    "133",
-    "144",
-    "155",
-    "166",
-    "177",
-    "188",
-    "199",
-    "200",
-    "220",
-    "223",
-    "224",
-    "225",
-    "226",
-    "227",
-    "228",
-    "229",
-    "233",
-    "244",
-    "255",
-    "266",
-    "277",
-    "288",
-    "299",
-    "300",
-    "330",
-    "334",
-    "335",
-    "336",
-    "337",
-    "338",
-    "339",
-    "344",
-    "355",
-    "366",
-    "377",
-    "388",
-    "399",
-    "400",
-    "440",
-    "445",
-    "446",
-    "447",
-    "448",
-    "449",
-    "455",
-    "466",
-    "477",
-    "488",
-    "499",
-    "500",
-    "550",
-    "556",
-    "557",
-    "558",
-    "559",
-    "566",
-    "577",
-    "588",
-    "599",
-    "600",
-    "660",
-    "667",
-    "668",
-    "669",
-    "677",
-    "688",
-    "699",
-    "700",
-    "770",
-    "778",
-    "779",
-    "788",
-    "799",
-    "800",
-    "880",
-    "889",
-    "899",
-    "900",
-    "990",
+function Dpmotor() {
+  const DpmotorArray = [
+    "120",
+    "123",
+    "124",
+    "125",
+    "126",
+    "127",
+    "128",
+    "129",
+    "130",
+    "134",
+    "135",
+    "136",
+    "137",
+    "138",
+    "139",
+    "140",
+    "145",
+    "146",
+    "147",
+    "148",
+    "149",
+    "150",
+    "156",
+    "157",
+    "158",
+    "159",
+    "160",
+    "167",
+    "168",
+    "169",
+    "170",
+    "178",
+    "179",
+    "180",
+    "189",
+    "190",
+    "230",
+    "234",
+    "235",
+    "236",
+    "237",
+    "238",
+    "239",
+    "240",
+    "245",
+    "246",
+    "247",
+    "248",
+    "249",
+    "250",
+    "256",
+    "257",
+    "258",
+    "259",
+    "260",
+    "267",
+    "268",
+    "269",
+    "270",
+    "278",
+    "279",
+    "280",
+    "289",
+    "290",
+    "340",
+    "345",
+    "346",
+    "347",
+    "348",
+    "349",
+    "350",
+    "356",
+    "357",
+    "358",
+    "359",
+    "360",
+    "367",
+    "368",
+    "369",
+    "370",
+    "378",
+    "379",
+    "380",
+    "389",
+    "390",
+    "450",
+    "456",
+    "457",
+    "458",
+    "459",
+    "460",
+    "467",
+    "468",
+    "469",
+    "470",
+    "478",
+    "479",
+    "480",
+    "489",
+    "490",
+    "560",
+    "567",
+    "568",
+    "569",
+    "570",
+    "578",
+    "579",
+    "580",
+    "589",
+    "590",
+    "670",
+    "678",
+    "679",
+    "680",
+    "689",
+    "690",
+    "780",
+    "789",
+    "790",
+    "890",
   ];
   const todayDate = new Date().toISOString().split("T")[0];
   const months = [
-    "January", "February", "March", "April", "May", "June", "July", "August",
-    "September", "October", "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
-  
+
   const newDate = new Date();
   const day = newDate.getDate();
   const monthIndex = newDate.getMonth();
   const year = newDate.getFullYear();
-  
-  const formattedDate = day + "-" + months[monthIndex] + "-" + year;
-  const [submit, setSubmit]= useState('');
 
-  
+  const formattedDate = day + "-" + months[monthIndex] + "-" + year;
+  const [submit, setSubmit] = useState("");
 
   const navbarStyle = {
     height: "60px",
@@ -125,7 +163,7 @@ function Sdoublepana() {
     alignItems: "center",
   };
   const backStyle = {
-    backgroundSize: "cover",
+    backgroundSize: "cover", // This will make the background image cover the container without
     backgroundPosition: "center",
     position: "relative",
     paddingBottom: "400px",
@@ -151,16 +189,18 @@ function Sdoublepana() {
   const [submittedData, setSubmittedData] = useState([]);
   const [res, setRes] = useState({});
   const [isProceed, setIsProceed] = useState(false);
-  const [showModal,setShowModal] = useState(false);
-  const closeModal = ()=> setShowModal(false);
+  const [showModal, setShowModal] = useState(false);
+  const closeModal = () => setShowModal(false);
   const clearSubmittedData = () => {
     setIsProceed(false);
     setSubmittedData([]); // Function to clear submittedData
   };
 
   const [isOpen, setIsOpen] = useState(true);
+  const [selectedOption, setSelectedOption] = useState("open");
   const { gameId, openTime, gameName, pana } = useLocation().state;
-  console.log("Pana in double pana of starline",pana);
+  console.log(gameId);
+
   const fetchData = async () => {
     try {
       const myHeaders = new Headers();
@@ -197,12 +237,13 @@ function Sdoublepana() {
   };
   useEffect(() => {
     fetchData();
+    console.log(isOpen);
   }, [res.wallet_amt]);
-
 
   useEffect(() => {
     if (res && res.wallet_amt) {
       setWalletAmt(resinfo.wallet_amt);
+      console.log(typeof walletAmt);
     }
   }, [res.wallet_amt]);
 
@@ -212,8 +253,7 @@ function Sdoublepana() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    
+
     setFormErrors({});
     const errors = validate(digit.current.value, point.current.value);
 
@@ -228,12 +268,14 @@ function Sdoublepana() {
     } else {
       setIsProceed(true);
       setFormErrors({});
-
+      const sessionValue = document.getElementById("option2").checked
+        ? "open"
+        : "close";
       const newDataObject = {
         digits: digit.current.value,
         closedigits: "",
         points: point.current.value,
-        session: "",
+        session: sessionValue,
       };
       const newWalletAmt = walletAmt - point.current.value;
 
@@ -241,6 +283,7 @@ function Sdoublepana() {
 
       setSubmittedData((prevData) => {
         const updatedData = [...prevData, newDataObject];
+        console.log(submittedData);
         return updatedData;
       });
       setDigitValue("");
@@ -259,7 +302,7 @@ function Sdoublepana() {
     const errors = {};
     if (!digit) {
       errors.digit = "Please enter the number";
-    } else if (!singleDigitArray.includes(digit)) {
+    } else if (!DpmotorArray.includes(digit)) {
       errors.digit = `Number ${digit} is not valid`;
     }
     if (!point) {
@@ -273,42 +316,47 @@ function Sdoublepana() {
   };
 
   const calculateTimeLeft = () => {
-    
-    const openTimeWithoutSuffix = openTime.replace(/\s[AaPp][Mm]$/, "");
-    const openDateString = new Date().toLocaleDateString(); // Get current date as a string
-    const open = `${openDateString}T${openTimeWithoutSuffix}`;
-    const parts = open.split("T");
-    const dateParts = parts[0].split("/");
-    const timeParts = parts[1].split(":");
-    const formattedDateString = `${dateParts[2]}-${dateParts[0].padStart(
-      2,
-      "0"
-    )}-${dateParts[1].padStart(2, "0")}T${timeParts[0].padStart(
-      2,
-      "0"
-    )}:${timeParts[1].padStart(2, "0")}:00`;
-    let openDate = new Date(
-      `${dateParts[2]}-${dateParts[0].padStart(2, "0")}-${dateParts[1].padStart(
-        2,
-        "0"
-      )}T${timeParts[0].padStart(2, "0")}:${timeParts[1].padStart(2, "0")}:00`
-    );
-    if (openTime.match(/[Pp][Mm]$/)) {
-      const openHours = openDate.getHours();
-      openDate.setHours(openHours === 12 ? 12 : openHours + 12);
-    }
-
-    const openMillisec = Date.parse(openDate);
-    if (openMillisec <= Date.now()) {
+    // Function to convert 12-hour format (e.g., "10:59 PM") to 24-hour format ("22:59")
+    const convertTo24Hour = (time12h) => {
+      const [time, modifier] = time12h.split(' ');
+      let [hours, minutes] = time.split(':');
+  
+      if (modifier.toLowerCase() === 'pm' && hours !== '12') {
+        hours = (parseInt(hours, 10) + 12).toString();
+      }
+      if (modifier.toLowerCase() === 'am' && hours === '12') {
+        hours = '00';
+      }
+      return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    };
+  
+    // Convert openTime to 24-hour format
+    const openTime24Hour = convertTo24Hour(openTime);
+    console.log("Converted open time (24-hour):", openTime24Hour);
+  
+    // Get the current clock time (HH:MM)
+    const currentTime = new Date();
+    const currentHours = currentTime.getHours().toString().padStart(2, '0');
+    const currentMinutes = currentTime.getMinutes().toString().padStart(2, '0');
+    const currentTimeOnly = `${currentHours}:${currentMinutes}`;
+  
+    console.log("Current time (HH:MM):", currentTimeOnly);
+  
+    // Compare the converted open time and current time
+    if (openTime24Hour <= currentTimeOnly) {
       setIsOpen(false);
+      setSelectedOption("close");
+    } else {
+      setIsOpen(true);
+      setSelectedOption("open");
     }
   };
-  const totalPoints=submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0)
+
   return (
-    <> 
-      <div style={backStyle} className="text-white bg-my-gradient-1" >
-      <div className="font-bold flex items-center justify-center text-lg underline pt-2"><h1>Double Pana</h1></div>
-        <div className="flex justify-center items-center">
+    <>  
+      <div style={backStyle} className="text-white bg-my-gradient-1">
+      <div className="font-bold flex items-center justify-center text-lg underline pt-2 ml-2"><h1>DP Motor</h1></div>
+        <div className="flex justify-center items-center pt-5 ">
           <div className="" style={cardStyle}>
             <input
               type="date"
@@ -316,21 +364,67 @@ function Sdoublepana() {
               readOnly
               className="shadow-md w-full flex justify-center py-2 px-4 text-black border border-black-500 rounded-xl text-center"
             />
-            <p className="mt-2 ml-2 font-bold text-white">Digit</p>
+            <p className="mt-2 ml-2 text-white">Choose Session</p>
+            <div className="flex space-x-4 justify-center items-center w-full ">
+            {isOpen ? (
+                  <div className="shadow-md border flex justify-center items-center w-1/2 border-black-500 px-4 py-2 bg-white rounded-xl">
+                  <input
+                    type="radio"
+                    id="option2"
+                    name="radioGroup"
+                    className="form-radio text-blue-500 focus:ring-2 focus:ring-blue-500"
+                    checked={selectedOption === "open"}
+                    onChange={() => setSelectedOption("open")}
+                  />
+                  <label htmlFor="option2" className="ml-2 text-gray-700">
+                    Open
+                  </label>
+                </div>
+              ) : (
+                <div className="shadow-md border flex justify-center items-center w-1/2 border-black-500 px-4 py-2 bg-gray-300 rounded-xl cursor-not-allowed opacity-50">
+                  <input
+                    type="radio"
+                    id="option2"
+                    name="radioGroup"
+                    className="form-radio text-blue-500 focus:ring-2 focus:ring-blue-500"
+                    checked={selectedOption === "open"}
+                    disabled
+                  />
+                  <label htmlFor="option2" className="ml-2 text-gray-700">
+                    Open
+                  </label>
+                </div>
+              )}
+              <div className="shadow-md flex justify-center items-center w-1/2 border border-black-500 px-4 py-2 bg-white rounded-xl">
+                <input
+                  type="radio"
+                  id="option1"
+                  name="radioGroup"
+                  className="form-radio text-blue-500 focus:ring-2 focus:ring-blue-500"
+                  checked={selectedOption === "close"}
+                  onChange={() => setSelectedOption("close")}
+                />
+                <label htmlFor="option1" className="ml-2 text-gray-700">
+                  Close
+                </label>
+              </div>
+            </div>
+
+            <p className="mt-2 ml-2 font-bold text-white">{selectedOption === "open" ? "Open Pana" : "Close Pana"}</p>
             <input
               type="number"
               inputMode="numeric"
               ref={digit}
-              placeholder="Enter Digit"
+              placeholder="Enter Pana"
               className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black"
-              list="digitList" // Step 2: Add list attribute
-              autoComplete="off" 
+            //   list="digitList" // Step 2: Add list attribute
+              autoComplete="off"
             />
             <datalist id="digitList">
-  {singleDigitArray.map((digit, index) => (
-    <option key={index} value={digit} />
-  ))}
-</datalist>
+              {DpmotorArray.map((digit, index) => (
+                <option key={index} value={digit} />
+              ))}
+            </datalist>
             <p className="mt-2 ml-2 font-bold text-white">Points</p>
             <input
               type="number"
@@ -349,27 +443,29 @@ function Sdoublepana() {
                 Proceed
               </button>
               {isProceed && (
-                  <>
-                    <button
-                      className="py-2 px-4 border border-black-500 rounded-xl bg-yellow-600 hover:bg-yellow-500 cursor-pointer mt-4 w-full ml-3"
-                      onClick={() => setShowModal(true)}
-                    >
-                      Submit
-                    </button>
-                    {showModal &&(
-                    <StarModal 
-                    closeModal={closeModal}
-                    totalIndex={submittedData.length} 
-                    totalPoints={totalPoints}
-                    submittedData={submittedData}   
-                    gameId={gameId} 
-                    gameName= {gameName}
-                    pana= {pana}
-                    date={formattedDate}
-                    clearSubmittedData={clearSubmittedData}
-                  />)}
-                  </>
-                )}
+                <>
+                  <button
+                    className="py-2 px-4 border border-black-500 rounded-xl bg-yellow-600 hover:bg-yellow-500 cursor-pointer mt-4 w-full ml-3"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Submit
+                  </button>
+                  {showModal && (
+                    <MyModal
+                      closeModal={closeModal}
+                      totalIndex={submittedData.length}
+                      totalPoints={totalPoints}
+                      submittedData={submittedData}
+                      gameId={gameId}
+                      gameName={gameName}
+                      pana={pana}
+                      gametype={selectedOption==="open" ? "Open" : "Close"}
+                      date={formattedDate}
+                      clearSubmittedData={clearSubmittedData}
+                    />
+                  )}
+                </>
+              )}
             </div>
             {submittedData.map((data, index) => {
               const handleClickRemoveDiv = (indexToRemove) => () => {
@@ -380,17 +476,18 @@ function Sdoublepana() {
                 setFormErrors({});
                 const removedItem = submittedData[indexToRemove];
                 const removedItemPoint = parseInt(removedItem.points);
-                
+
                 // Check if removedItemPoint is a valid number
                 if (!isNaN(removedItemPoint)) {
                   const newWalletAmt = walletAmt + removedItemPoint;
                   setWalletAmt(newWalletAmt);
                 } else {
-                  console.error('Invalid points data:', removedItem);
+                  console.error("Invalid points data:", removedItem);
                 }
                 if (newData.length === 0) {
                   setIsProceed(false); // Set isProceed to false if only one item is left
                 }
+                console.log(submittedData);
               };
 
               return (
@@ -400,7 +497,7 @@ function Sdoublepana() {
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Digit</h3>
+                      <h3>{isOpen ? "Open Pana" : "Close Pana"}</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">
@@ -424,5 +521,4 @@ function Sdoublepana() {
     </>
   );
 }
-
-export default Sdoublepana;
+export default Dpmotor;

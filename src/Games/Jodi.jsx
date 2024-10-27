@@ -214,7 +214,7 @@ function Jodi() {
               inputMode="numeric"
               ref={digit}
               placeholder="Enter Digit"
-              className="w-full py-2 px-4 border shadow-md border-black-500 rounded-xl text-white"
+              className="w-full py-2 px-4 border shadow-md border-black-500 rounded-xl text-black"
               list="digitList" // Step 2: Add list attribute
               autoComplete="off"
             />
@@ -229,7 +229,7 @@ function Jodi() {
               inputMode="numeric"
               ref={point}
               placeholder="Enter Points"
-              className="border shadow-md w-full  py-2 px-4 border-black-500 rounded-xl text-white"
+              className="border shadow-md w-full  py-2 px-4 border-black-500 rounded-xl text-black"
             />
             <div className="flex mb-4 text-white">
               <button
@@ -257,6 +257,7 @@ function Jodi() {
                       gameId={gameId}
                       gameName={gameName}
                       pana={pana}
+                      gametype={pana}
                       date={formattedDate}
                       clearSubmittedData={clearSubmittedData}
                     />
@@ -290,7 +291,7 @@ function Jodi() {
               return (
                 <div key={index} className="w-full flex mb-3 ">
                   <div
-                    className="shadow-md w-10/12  p-1  border border-black-500 bg-white text-white flex justify-between"
+                    className="shadow-md w-10/12  p-1  border border-black-500 bg-white text-black flex justify-between"
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">

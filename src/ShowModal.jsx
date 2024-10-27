@@ -12,6 +12,7 @@ const MyModal = ({
   gameId,
   gameName,
   pana,
+  gametype,
   date,
   clearSubmittedData,
 }) => {
@@ -42,6 +43,7 @@ const MyModal = ({
           submittedData,
           gameName,
           pana,
+          gametype,
           totalPoints,
           date
         );
@@ -62,6 +64,7 @@ const MyModal = ({
     submittedData,
     gameName,
     pana,
+    gametype,
     totalPoints,
     date
   ) => {
@@ -71,6 +74,43 @@ const MyModal = ({
       "Cookie",
       "ci_session=7c38fc1fc455fca9846d688fb8343f5c7ea71bee"
     );
+    console.log("Submitted data in Modal:",submittedData);
+    console.log("Pana in Modal:",pana);
+    console.log("GameType in Modal:",gametype);
+
+    const sessionData = submittedData.map(data => {
+      let closedigits = "";
+      let digits = "";
+      let closePana = "";
+      let panaValue = "";
+  
+      if (pana === "Half Sangam") {
+        console.log("I am in Half Sangam");
+       if (gametype === "Open") {
+          digits = data.digits; // Use open digit
+          closedigits=data.closedigits;
+          closePana = pana; // Send close pana
+        }
+      } else {
+        // For other cases
+        if (gametype === "Close") {
+          closedigits = data.digits; // Use close digit
+          closePana = pana; // Send close pana
+        } else if (gametype === "Open") {
+          digits = data.digits; // Use open digit
+          panaValue = pana; // Send open pana
+        }
+      }
+      
+      return {
+        closedigits: closedigits,
+        digits: digits,
+        points: data.points,
+        session: gametype,
+        pana: panaValue,
+        closepana: closePana,
+      };
+    });
 
     const raw = JSON.stringify({
       env_type: "Prod",
@@ -83,9 +123,10 @@ const MyModal = ({
         totalbit: totalPoints,
         gameid: gameId,
         pana: pana,
+        gametype: gametype,
         bid_date: date,
-        session: "Close",
-        result: submittedData,
+        session:pana,
+        result: gametype==="Open"?sessionData:submittedData,
       },
     });
 
@@ -129,7 +170,7 @@ const MyModal = ({
           </div>
           <div className="flex flex-col">
             <p>Game Type</p>
-            <p className="text-center">Close</p>
+            <p className="text-center">{gametype}</p>
           </div>
         </div>
         <div className="flex justify-around mt-2 text-white">

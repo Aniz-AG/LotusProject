@@ -1,5 +1,9 @@
+
+
+
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import bgImage from "./assets/ICONS AND BACKGROUNDS/login signup back.png";
 import logo from "./assets/ICONS AND BACKGROUNDS/Transparent logo.png";
 
@@ -8,6 +12,8 @@ function ForgotPassword() {
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const validate = (phone) => {
     const errors = {};
@@ -34,6 +40,9 @@ function ForgotPassword() {
       setTimeout(() => {
         setSuccessMessage("A password reset link has been sent to your phone.");
         setIsSubmitting(false);
+
+        // Redirect to OTPForgotPassword after submission
+        navigate("/OTP");
       }, 1000);
     } else {
       setIsSubmitting(false);
@@ -41,40 +50,45 @@ function ForgotPassword() {
   };
 
   return (
-    <div style={{
-      backgroundImage: `url(${bgImage})`,
-      backgroundSize: "cover",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "center",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    }} className="bg-my-gradient-1">
-      <form className="flex flex-col p-5 pt-0 z-4" onSubmit={handleSubmit}>
+    <div
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: "white", // Change the text color of the entire page to white
+      }}
+      className="bg-my-gradient-1"
+    >
+      <form className="flex flex-col p-6 pt-0 rounded-lg shadow-lg w-11/12 max-w-sm" onSubmit={handleSubmit}>
         <div className="flex flex-col justify-center items-center mb-6">
-          <img src={logo} alt="Logo" className="w-40 h-40 rounded-xl mb-[60px] translate-y-[-70px] mr-[120px]" />
-          <h3 className="font-bold text-[13px] text-white translate-y-[-50px]">Enter your phone number to reset your password</h3>
+          <img src={logo} alt="Logo" className="w-32 h-32 rounded-xl mb-4" />
+          <h3 className="font-bold text-lg text-center">Verify your phone number to reset your password</h3>
         </div>
         <input
           type="text"
           placeholder="Phone Number"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          className="py-2 pl-1 border-b-2 border-gold-500 text-white focus:outline-none"
+          className="py-2 pl-1 border-b-2 border-gold-500 focus:outline-none mb-4"
           style={{
-            backgroundColor: "inherit",
+            backgroundColor: "transparent",
             borderBottom: "2px solid goldenrod",
             boxShadow: "none",
+            color: "white", // Change input text color to white
           }}
           name="phone"
         />
         {formErrors.phone && <p className="text-red-500">{formErrors.phone}</p>}
         {successMessage && <p className="text-green-500">{successMessage}</p>}
-        
-        <div className="flex justify-center items-center mb-5 w-[80px] mx-auto">
+
+        <div className="flex justify-center items-center mb-5">
           <button
-            className="text-white font-bold py-3 border border-black-500 rounded-xl mt-4 px-[60px] bg-gradient-to-r from-yellow-700 to-yellow-300 hover:bg-yellow-500 transition duration-300"
+            className="text-white font-bold py-3 border border-black rounded-xl mt-4 w-full bg-gradient-to-r from-yellow-700 to-yellow-300 hover:bg-yellow-500 transition duration-300"
             type="submit"
             disabled={isSubmitting}
           >
@@ -82,7 +96,7 @@ function ForgotPassword() {
           </button>
         </div>
         <div className="flex justify-center">
-          <p className="text-white">
+          <p>
             Remember your password?{" "}
             <Link to="/login" className="text-yellow-500 font-bold">Login</Link>
           </p>

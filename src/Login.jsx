@@ -2,38 +2,37 @@ import logo from "./assets/ICONS AND BACKGROUNDS/Transparent logo.png";
 import whatsapp from './assets/ICONS AND BACKGROUNDS/whatsapp.png'; // Import the WhatsApp icon
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useState, useRef, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "./Util/loginSlice";
 import { addPass } from "./Util/passslice";
 import bgImage from "./assets/ICONS AND BACKGROUNDS/login signup back.png";
+import useGameFront from "./Hooks/useGameFront";
 
 function Login() {
   const [formErrors, setFormErrors] = useState({});
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [errorText, setErrorText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(""); // State to hold the phone number for WhatsApp
   const phoneno = useRef();
   const password = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchPhoneNumber = async () => {
-      try {
-        const response = await fetch("https://example.com/api/get-whatsapp-phone");
-        const data = await response.json();
-        if (data.phone) {
-          setPhoneNumber(data.phone);
-        }
-      } catch (error) {
-        console.error("Error fetching phone number:", error);
-      }
-    };
+  const token = useSelector((state) => state.userDetail.token);
 
-    fetchPhoneNumber();
-  }, []);
+  const resinfo = useGameFront(token);
+
+  const [adminPhone, setAdminPhone] = useState('');
+
+  useEffect(() => {
+    if (resinfo) {
+      setAdminPhone(resinfo["mobile_1"] || "1234567890"); // Fallback if no mobile is found
+    }
+  }, [resinfo]);
+  const whatsappUrl = `https://wa.me/${adminPhone}`;
+
 
   const handleToggleCurrentPassword = () => {
     setShowCurrentPassword(!showCurrentPassword);
@@ -60,7 +59,7 @@ function Login() {
     try {
       await fetchData(phoneno.current.value, password.current.value);
     } catch (error) {
-      setErrorText("Username or password incorrect");
+      setErrorText("User Not Registered");
     } finally {
       setIsSubmitting(false);
     }
@@ -107,23 +106,28 @@ function Login() {
     }
   };
 
-  // WhatsApp functionality
-  const whatsappUrl = `https://wa.me/${phoneNumber}`;
-
   return (
-    <div style={{ 
-      backgroundImage: `url(${bgImage})`, 
-      backgroundSize: "cover", 
-      backgroundRepeat: "no-repeat", 
-      backgroundPosition: "center", 
-      height: "100vh", 
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    }}>
+    <div
+      style={{
+        backgroundImage: `url(${bgImage})`,
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflowY: "auto"
+      }}
+    >
       <form className="flex flex-col p-5 pt-0 z-4" onSubmit={handleSubmit}>
         <div className="flex flex-col justify-center items-center mb-6">
-          <img src={logo} alt="Center Image" className="w-40 h-40 rounded-xl mb-[60px] translate-y-[-70px] mr-[120px]" />
+          <img
+            src={logo}
+            alt="Center Image"
+            className="rounded-xl mb-[60px] object-contain"
+            style={{ maxWidth: "100%", maxHeight: "200px", height: "auto" }} // Adjust dimensions to fit within the container
+          />
           <h3 className="font-bold text-[13px] text-white translate-y-[-50px]">I am waiting for you, please enter your details</h3>
         </div>
         <div className="flex flex-col gap-[20px]">
@@ -134,22 +138,21 @@ function Login() {
             ref={phoneno}
             className="py-2 pl-1 border-b-2 border-gold-500 text-white focus:outline-none"
             style={{
-              backgroundColor: "inherit", 
+              backgroundColor: "inherit",
               borderBottom: "2px solid goldenrod",
-              boxShadow: "none", 
+              boxShadow: "none",
             }}
             name="phoneno"
           />
-         
           <input
             type={showCurrentPassword ? "text" : "password"}
             placeholder="Password"
             ref={password}
             className="py-2 pl-1 text-white focus:outline-none"
             style={{
-              backgroundColor: "inherit", 
+              backgroundColor: "inherit",
               borderBottom: "2px solid goldenrod",
-              boxShadow: "none", 
+              boxShadow: "none",
             }}
             name="password"
           />
@@ -161,7 +164,7 @@ function Login() {
             className={`absolute ${formErrors.password ? "top-2" : "top-5"} right-4`}
             onClick={handleToggleCurrentPassword}
           >
-            {showCurrentPassword ? <FiEyeOff className="text-white"/> : <FiEye />}
+            {showCurrentPassword ? <FiEyeOff className="text-white" /> : <FiEye />}
           </button>
         </div>
 
@@ -178,7 +181,7 @@ function Login() {
         <div className="flex justify-center">
           <p className="text-white">
             Don't Have an account?{" "}
-            <Link to="/r" className="text-yellow-500 font-bold">  Sign Up</Link>
+            <Link to="/r" className="text-yellow-500 font-bold">Register</Link>
           </p>
         </div>
         <div className="flex justify-center mt-2">
@@ -188,14 +191,14 @@ function Login() {
         {/* Contact admin section with WhatsApp icon */}
         <div className="flex justify-center mt-5">
           <p className="text-white">Contact Admin: </p>
-          <button 
-            onClick={() => window.open(whatsappUrl, "_blank")} // Opens WhatsApp in a new tab
+          <button
+            onClick={() => window.open(whatsappUrl, "_blank")}
             className="flex items-center justify-center ml-2"
           >
-            <img 
-              src={whatsapp} 
-              alt="WhatsApp Icon" 
-              className="translate-y-[-4px] w-8 h-8 rounded-full" 
+            <img
+              src={whatsapp}
+              alt="WhatsApp Icon"
+              className="translate-y-[-4px] w-8 h-8 rounded-full"
             />
           </button>
         </div>

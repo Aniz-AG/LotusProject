@@ -32,47 +32,51 @@ function WithdrawHistory() {
       setGameRates([]);
     }
   }, [resinfo]);
+
   const back = () => {
     navigate("/imp8");
-  }
+  };
+
   return (
     <>
- 
-    <div >
-      <div className="text-black ">
-        {gameRates.map((game, index) => (
-          <div key={index} className="mb-4 mt-2">
-            <a href={game?.payment_receipt} target="_blank" rel="noopener noreferrer">
-              <div className="border-black  mr-2 ml-4 p-2 py-4 flex flex-col bg-white-700 rounded-3xl border">
-                <div>
-                  <p>
-                    <span className="font-bold">Id:</span> {game?.request_number}
-                  </p>
-                </div>
-                <div className="flex justify-between align-top ">
-                  <div className="flex flex-col">
-                    <p >
-                      <span className="font-bold">Payment Method:</span> 
-                      {game?.google_pay_number && "Google Pay"}
-                      {game?.phone_pay_number && "PhonePe"}
-                      {game?.paytm_number && "Paytm"}
-                      {!game?.google_pay_number &&
-                        !game?.phone_pay_number &&
-                        !game?.paytm_number &&
-                        "N/A"}
-                    </p>
-                    <p> {game?.insert_date}</p>
+      <div>
+        <div className="text-black">
+          {gameRates.map((game, index) => {
+            console.log("Game request status", game?.request_status);
+            return (
+              <div key={index} className="mb-4 mt-2">
+                <a href={game?.payment_receipt} target="_blank" rel="noopener noreferrer">
+                  <div className="border-black mr-2 ml-4 p-2 py-4 flex flex-col bg-white-700 rounded-3xl border">
+                    <div>
+                      <p>
+                        <span className="font-bold">Id:</span> {game?.request_number}
+                      </p>
+                    </div>
+                    <div className="flex justify-between align-top">
+                      <div className="flex flex-col">
+                        <p>
+                          <span className="font-bold">Payment Method:</span>
+                          {game?.google_pay_number && "Google Pay"}
+                          {game?.phone_pay_number && "PhonePe"}
+                          {game?.paytm_number && "Paytm"}
+                          {!game?.google_pay_number &&
+                            !game?.phone_pay_number &&
+                            !game?.paytm_number &&
+                            "N/A"}
+                        </p>
+                        <p>{game?.insert_date}</p>
+                      </div>
+                      <div className="flex flex-col">
+                        <p className="text-yellow-600">{game?.request_amount}</p>
+                        <p>{game?.request_status === "0" ? "Pending" :(game.request_status=="1"?"Cancelled":"Approved")}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <p className="text-yellow-600"> {game?.request_amount}</p>
-                    <p>{game?.request_status === "0" ? "Pending" : "true"}</p>
-                  </div>
-                </div>
+                </a>
               </div>
-            </a>
-          </div>
-        ))}
-      </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );

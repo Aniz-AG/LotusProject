@@ -213,7 +213,7 @@ function FullSangam() {
     const errors = {};
     if (!Opendigit) {
       errors.Opendigit = "Please enter the number";
-    } else if (!fullSangamOpenArray.includes(Opendigit)) {
+    } else if (!fullSangamArray.includes(Opendigit)) {
       errors.Opendigit = `Number ${Opendigit} is not valid`;
     }
     else if (!fullSangamArray.includes(digit)) {
@@ -247,14 +247,14 @@ function FullSangam() {
               readOnly
               className="shadow-md  w-full flex justify-center py-2 px-2 text-black border border-black-500 rounded-xl text-center"
             />  
-          <p className="mt-2 ml-2 font-bold text-white">Open Digit</p>
+          <p className="mt-2 ml-2 font-bold text-white">Open Pana</p>
             <input
               type="number"
               inputMode="numeric"
               ref={Opendigit}
-              placeholder="Enter Digit"
-              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-white"
-              list="digitList" // Step 2: Add list attribute
+              placeholder="Enter Pana"
+              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black"
+              list="digitClosedList" // Step 2: Add list attribute
               autoComplete="off"
             />
             <datalist id="digitList">
@@ -262,13 +262,13 @@ function FullSangam() {
                 <option key={index} value={digit} />
               ))}
             </datalist>
-            <p className="mt-2 ml-2 font-bold text-white">Close Digit</p>
+            <p className="mt-2 ml-2 font-bold text-white">Close Pana</p>
             <input
               type="number"
               inputMode="numeric"
               ref={digit}
-              placeholder="Enter Digit"
-              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-white"
+              placeholder="Enter Pana"
+              className="shadow-md w-full py-2 px-4 border border-black-500 rounded-xl text-black"
               list="digitClosedList" // Step 2: Add list attribute
               autoComplete="off"
             />
@@ -283,7 +283,7 @@ function FullSangam() {
               inputMode="numeric"
               ref={point}
               placeholder="Enter Points"
-              className="shadow-md w-full  py-2 px-4 border border-black-500 rounded-xl text-white"
+              className="shadow-md w-full  py-2 px-4 border border-black-500 rounded-xl text-black"
             />
             <div className="flex  mb-4 text-white">
               <button
@@ -342,17 +342,19 @@ function FullSangam() {
               };
 
               return (
+
+                
                 <div key={index} className="w-full flex mb-3 ">
                   <div
-                    className="shadow-md w-10/12  p-1  border border-black-500 bg-white text-white flex justify-between"
+                    className="shadow-md w-10/12  p-1  border border-black-500 bg-white text-black flex justify-between"
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Open Digit</h3>
+                      <h3>Open Pana</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Close Digit</h3>
+                      <h3>Close Pana</h3>
                       <h3>{data.closedigits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">

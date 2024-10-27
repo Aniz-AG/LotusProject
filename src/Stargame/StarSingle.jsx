@@ -17,16 +17,16 @@ function StarSingle() {
     "January", "February", "March", "April", "May", "June", "July", "August",
     "September", "October", "November", "December"
   ];
-  
+
   const newDate = new Date();
   const day = newDate.getDate();
   const monthIndex = newDate.getMonth();
   const year = newDate.getFullYear();
-  
+
   const formattedDate = day + "-" + months[monthIndex] + "-" + year;
   const [submit, setSubmit]= useState('');
 
-  
+
   const navbarStyle = {
     height: "60px",
     display: "flex",
@@ -120,8 +120,7 @@ function StarSingle() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    
+
     setFormErrors({});
     const errors = validate(digit.current.value, point.current.value);
 
@@ -181,7 +180,7 @@ function StarSingle() {
   };
 
   const calculateTimeLeft = () => {
-    
+
     const openTimeWithoutSuffix = openTime.replace(/\s[AaPp][Mm]$/, "");
     const openDateString = new Date().toLocaleDateString(); // Get current date as a string
     const open = `${openDateString}T${openTimeWithoutSuffix}`;
@@ -213,9 +212,9 @@ function StarSingle() {
   };
   const totalPoints=submittedData.reduce((acc, curr) => acc + parseInt(curr.points), 0)
   return (
-    <>  
+    <>
       <div style={backStyle} className="text-white bg-my-gradient-1" >
-          
+
       <div className="font-bold flex items-center justify-center text-lg underline pt-2"><h1>Single Digit</h1></div>
         <div className="flex justify-center items-center">
           <div className="" style={cardStyle}>
@@ -225,7 +224,7 @@ function StarSingle() {
               readOnly
               className="shadow-md w-full flex justify-center py-2 px-4 text-black border border-black-500 rounded-xl text-center"
             />
-            <p className="mt-2 ml-2 font-bold text-white">Open Digit</p>
+            <p className="mt-2 ml-2 font-bold text-white">Digit</p>
             <input
               type="number"
               inputMode="numeric"
@@ -309,7 +308,7 @@ function StarSingle() {
                     style={{ borderRadius: "25px" }}
                   >
                     <div className="flex flex-col items-center ml-4">
-                      <h3>Close Digit</h3>
+                      <h3> Digit</h3>
                       <h3>{data.digits}</h3>
                     </div>
                     <div className="flex flex-col items-center mr-4">
