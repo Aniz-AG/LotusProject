@@ -68,7 +68,16 @@ function WithdrawHistory() {
                       </div>
                       <div className="flex flex-col">
                         <p className="text-yellow-600">{game?.request_amount}</p>
-                        <p>{game?.request_status === "0" ? "Pending" :(game.request_status=="1"?"Cancelled":"Approved")}</p>
+                        <p style={{
+                            color: game?.request_status === "0" ? "purple" :
+                                  game.request_status === "1" ? "red" :
+                                  "darkgreen"
+                          }}>
+                            {game?.request_status === "0" ? "Pending" :
+                            game.request_status === "1" ? "Cancelled" :
+                            "Approved"}
+                        </p>
+
                       </div>
                     </div>
                   </div>
