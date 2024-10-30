@@ -584,7 +584,7 @@ function Ssinglepana() {
       digits: digitValue,
       closedigits: "",
       points: pointValue,
-      session: "",
+      session: "Open",
     };
     console.log("New Data Object in Starline:",newDataObject);
     const newWalletAmt = walletAmt - pointValue;

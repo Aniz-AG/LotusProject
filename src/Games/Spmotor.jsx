@@ -477,7 +477,7 @@ function Spmotor() {
                 const removedItem = submittedData[indexToRemove];
                 const removedItemPoint = parseInt(removedItem.points);
 
-                // Check if removedItemPoint is a valid number
+                
                 if (!isNaN(removedItemPoint)) {
                   const newWalletAmt = walletAmt + removedItemPoint;
                   setWalletAmt(newWalletAmt);
@@ -485,7 +485,7 @@ function Spmotor() {
                   console.error("Invalid points data:", removedItem);
                 }
                 if (newData.length === 0) {
-                  setIsProceed(false); // Set isProceed to false if only one item is left
+                  setIsProceed(false); 
                 }
                 console.log(submittedData);
               };

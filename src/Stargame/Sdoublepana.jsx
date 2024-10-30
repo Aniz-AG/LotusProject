@@ -233,7 +233,7 @@ function Sdoublepana() {
         digits: digit.current.value,
         closedigits: "",
         points: point.current.value,
-        session: "",
+        session: "Open",
       };
       const newWalletAmt = walletAmt - point.current.value;
 

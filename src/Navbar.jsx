@@ -1,30 +1,6 @@
-import WalletIcon from "./Images/wallet.png";
-import HamburgerIcon from "./Images/Hamburger.png";
 import "./Navbar.css";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import "./Sidebar.css";
-import sidebarBackground from "./Images/bg.jpg";
-import logoutImg from "./Images/logout.png";
-import logo from "./assets/ICONS AND BACKGROUNDS/Transparent logo.png";
-import call24 from "./Images/call_24.png";
-import Home from "./Images/home.png";
-import profile from "./Images/profile.png";
-import AddFund from "./Images/add.png";
-import Wallet from "./Images/wallet.png";
-import WinHistory from "./Images/win_history.png";
-import BidHistory from "./Images/bid_history.png";
-import Rating from "./Images/rating.png";
-import Share from "./Images/share.png";
-import ChangePass from "./Images/reset_pass.png";
-import lock_icon from "./Images/lock_icon.png";
-import user_profile from "./Images/user_profile.png";
-import question from "./Images/question.png";
-import website from "./Images/website.png";
-import share_icon from "./Images/share_icon.png";
-import policy from "./Images/policy.png";
-import telegram_icon from "./Images/telegram_icon.png";
-import acc from "./Images/acc.png";
-
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "./Util/loginSlice";
@@ -55,7 +31,6 @@ function Navbar() {
     // backgroundImage: `url(${sidebarBackground})`,
     background: 'linear-gradient(to bottom, rgb(5, 46, 25) 0%, rgb(5, 56, 39) 80%)',
     backgroundSize: "cover",
-    /* Add other background properties as needed */
   };
 
   const username = useSelector((state) => state.userDetail.username);
@@ -65,7 +40,7 @@ function Navbar() {
   const [isSidebarActive, setSidebarActive] = useState(false);
   const navigate = useNavigate();
   const resinfo = useGameFront(token);
-  console.log(resinfo);
+  console.log("Navbar resinfo:",resinfo);
   const telegram = resinfo["telegram_no"];
   console.log("phone number:",telegram);
 
@@ -92,8 +67,12 @@ function Navbar() {
   };
 
   const handleClick = () => {
-    // window.location.href = resinfo1['web_starline_chart_url'];
-    window.open('https://lotus365matka.in/uploads/images/GT_1718623233.apk', '_blank');
+    if (resinfo.app_link) {
+      console.log(resinfo.app_link);
+      window.open(resinfo.app_link, '_blank');
+    } else {
+      console.error('App link is not available');
+    }
   };
 
   const handleClick1 = () => {

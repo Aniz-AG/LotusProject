@@ -6,26 +6,26 @@ import useHowtoPlay from "./Hooks/useHowtoPlay";
 import { useState, useEffect } from "react";
 
 function Htp() {
-
   const [status, setStatus] = useState(false);
   const [gameRates, setGameRates] = useState([]);
+  const navigate = useNavigate();
 
   const pageStyle = {
-    backgroundColor: '#013220', // Greenish background for the entire page
+    backgroundColor: '#013220',
     minHeight: '100vh',
     padding: '20px',
     color: 'white',
   };
 
   const contentStyle = {
-    backgroundColor: '#1a3d2f', // Slightly darker greenish shade for content section
+    backgroundColor: '#1a3d2f',
     padding: '20px',
     borderRadius: '10px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
   };
 
   const youtubeContainerStyle = {
-    backgroundColor: '#ffcc00', // Yellow background for the "How to Play Tutorial" section
+    backgroundColor: '#ffcc00',
     textAlign: 'center',
     padding: '20px',
     borderRadius: '10px',
@@ -40,23 +40,29 @@ function Htp() {
     fontSize: '18px',
   };
 
-  const navigate = useNavigate();
   const back = () => {
     navigate("/imp");
   };
 
   const resinfo = useHowtoPlay();
+  console.log("How to play response:", resinfo);
+
   useEffect(() => {
-    if (resinfo && resinfo["result"]) {
+    if (resinfo && resinfo.result) {
       setStatus(true);
-      setGameRates(resinfo["result"]);
+      setGameRates(resinfo.result);
     }
   }, [resinfo]);
-  console.log(resinfo);
 
   const renderHowToPlayContent = () => {
-    return { __html: resinfo?.content?.[0]?.how_to_play_content };
-  }
+    return {
+      __html: (resinfo?.content && resinfo.content.length > 0)
+        ? resinfo.content[0].how_to_play_content || ""
+        : ""
+    };
+  };
+
+  const videoLink = resinfo?.content?.[0]?.video_link; // Safe access to video_link
 
   return (
     <div className="relative" style={pageStyle}>
@@ -66,21 +72,25 @@ function Htp() {
 
       {/* Content section */}
       <div className="flex items-center justify-center shadow-md" style={contentStyle}>
-        <div className="text-white flex flex-col p-5" dangerouslySetInnerHTML={renderHowToPlayContent()}>
-        </div>
+        <div
+          className="text-white flex flex-col p-5"
+          dangerouslySetInnerHTML={renderHowToPlayContent()}
+        />
       </div>
 
       {/* YouTube link section with a yellow background */}
       <div className="flex justify-center">
         <div style={youtubeContainerStyle}>
-          <a
-            href=""
-            target="_blank"
-            rel="noopener noreferrer"
-            style={youtubeLinkStyle}
-          >
-            Watch How to Play Tutorial on YouTube
-          </a>
+          {videoLink && ( // Check if videoLink exists before rendering
+            <a
+              href={videoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={youtubeLinkStyle}
+            >
+              Watch How to Play Tutorial on YouTube
+            </a>
+          )}
         </div>
       </div>
     </div>

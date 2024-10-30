@@ -63,7 +63,7 @@ function StarSingle() {
   const closeModal = ()=> setShowModal(false);
   const clearSubmittedData = () => {
     setIsProceed(false);
-    setSubmittedData([]); // Function to clear submittedData
+    setSubmittedData([]); 
   };
 
   const [isOpen, setIsOpen] = useState(true);
@@ -140,7 +140,7 @@ function StarSingle() {
         digits: digit.current.value,
         closedigits: "",
         points: point.current.value,
-        session: "",
+        session: "Open",
       };
       const newWalletAmt = walletAmt - point.current.value;
 
@@ -235,10 +235,10 @@ function StarSingle() {
               autoComplete="off" 
             />
             <datalist id="digitList">
-  {singleDigitArray.map((digit, index) => (
-    <option key={index} value={digit} />
-  ))}
-</datalist>
+            {singleDigitArray.map((digit, index) => (
+              <option key={index} value={digit} />
+            ))}
+            </datalist>
             <p className="mt-2 ml-2 font-bold text-white">Points</p>
             <input
               type="number"

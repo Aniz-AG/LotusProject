@@ -52,6 +52,7 @@ console.log("Pana:",pana)
   };
 
   const fetchData = async (token, gameId, submittedData, gameName, pana, totalPoints, date) => {
+    console.log("Submitted data in StarModal:",submittedData);
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const raw = JSON.stringify({
@@ -66,8 +67,8 @@ console.log("Pana:",pana)
         gameid: gameId,
         pana: pana,
         bid_date: date,
-        session: "Close",
-        result: submittedData,
+        session: "Open",
+        result: submittedData, //submitted data contains points, digits 
       },
     });
     const requestOptions = {
