@@ -22,7 +22,7 @@ function Transaction() {
       setGameRates([]);
     }
   }, [resinfo]);
-
+console.log("Game rates:",gameRates);
   const navigate = useNavigate();
   const back = () => {
     navigate("/imp7");

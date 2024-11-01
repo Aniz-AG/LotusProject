@@ -1,7 +1,7 @@
 // import React, { useState } from "react";
 import topBackground from "../Images/bg.png";
 import search from '../Images/search.png';
-import AddFundHistory from "./AddFundHistroy";
+import AddFundHistory from "./AddFundHistory";
 import AddFund from "./AddFund";
 
 function IMP9() {

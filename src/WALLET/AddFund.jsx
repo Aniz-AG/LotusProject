@@ -12,7 +12,7 @@ function AddFunds() {
   const [paymentMethod, setPaymentMethod] = useState(""); 
   const [bankDetails, setBankDetails] = useState("");
   const navigate = useNavigate();
-  const name= useSelector((state) => state.userDetail.username);
+  const name = useSelector((state) => state.userDetail.username);
   const mobile = useSelector((state) => state.userDetail.mobile);
   const unique = useSelector((state) => state.userDetail.token);
   const resinfo = useUpiOption(unique, mobile);
@@ -33,7 +33,7 @@ function AddFunds() {
       body: raw,
       redirect: "follow",
     };
-    
+
     try {
       const response = await fetch(`https://lotus365matka.in/api-admin-bank-details`, requestOptions);
       const result = await response.json();
@@ -55,7 +55,7 @@ function AddFunds() {
   }, []);
 
   const handleAddFunds = () => {
-    if (parseInt(amountToAdd) >= 500) {
+    if (parseInt(amountToAdd) >= 1) {
       if (!paymentMethod) {
         setError("Please select a payment method");
         return;
@@ -63,7 +63,7 @@ function AddFunds() {
       setError("");
       initiateUpiPayment(paymentMethod, amountToAdd);
     } else {
-      setError("Minimum amount to add is 500");
+      setError("Minimum amount to add is 1");
     }
   };
 
@@ -86,7 +86,8 @@ function AddFunds() {
     };
 
     try {
-      await fetch(`https://lotus365matka.in/api-fund-request-add`, requestOptions);
+      const res=await fetch(`https://lotus365matka.in/api-fund-request-add`, requestOptions);
+      console.log("Add fund response:",res);
     } catch (error) {
       console.error("Error sending fund request:", error);
     }
@@ -94,10 +95,19 @@ function AddFunds() {
 
   const initiateUpiPayment = (method, amount) => {
     let upiId = "";
-    if (method === "GPay" && bankDetails) {
+    let uri = "";
+
+    if (method === "GPay") {
       upiId = bankDetails.google_upi_payment_id;
-    } else if (method === "PhonePe" && bankDetails) {
+      uri = `intent://pay?pa=${upiId}&pn=${name}&mc=&tid=123456&tr=abcdef&tn=Add Funds&am=${amount}&cu=INR#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
+    } else if (method === "PhonePe") {
       upiId = bankDetails.phonepay_upi_payment_id;
+      uri = `phonepe://pay?pa=${upiId}&pn=${name}&am=${amount}&tn=Add Funds&mc=0000&cu=INR&mode=02&purpose=00`;
+      const additionalParams = `&orgid=159765&mg=OFFLINE&qrMedium=04&tr=abcdef`;
+      uri += additionalParams;
+    } else if (method === "Others") {
+      upiId = bankDetails.google_upi_payment_id;
+      uri = `upi://pay?pa=${upiId}&pn=${name}&mc=&tid=123456&tr=abcdef&tn=Add Funds&am=${amount}&cu=INR`;
     }
 
     if (!upiId) {
@@ -105,79 +115,85 @@ function AddFunds() {
       return;
     }
 
-    const uri = `upi://pay?pa=${upiId}&pn=${name}&mc=&tid=YourTransactionId&tr=YourTransactionRefId&tn=YourTransactionNote&am=${amount}&cu=INR&url=https://yourapp.com/payment-response`;
+    // Attempt to open the UPI app directly
+    try {
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      window.open(uri, '_blank');
 
-    const intent = window.navigator.userAgent.match(/Android/i)
-        ? `intent://pay?${new URLSearchParams(uri).toString()}#Intent;scheme=https;package=${method === "PhonePe" ? "com.phonepe.app" : "com.google.android.apps.nbu.paisa.user"};end`
-        : uri ;
-    window.open(intent, "_blank");
-
-    // Send request to backend after opening UPI app
-    setTimeout(() => {
-      sendFundRequest(amount);
-    }, 2000); 
+      // Send fund request after a short delay
+      setTimeout(() => {
+        sendFundRequest(amount);
+        //navigate('/imp');
+      }, 2000); 
+    } catch (error) {
+      console.error("Error opening UPI payment:", error);
+      setError("An error occurred while trying to initiate payment.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-my-gradient-1 flex justify-center mx-auto py-4">
       <div className="mx-auto flex flex-col items-center">
+        <h1 className="text-white text-2xl font-bold mb-[15px]">Add Funds</h1>
+
         <div className="mb-4">
           <input
             type="number"
             value={amountToAdd}
             onChange={(e) => setAmountToAdd(e.target.value)}
             placeholder="Enter amount to add"
-            className="w-full border rounded-full p-2 px-[70px]"
-            min="500"
+            className="w-[250px] border rounded-full py-2 text-center border-yellow-600 border-[3px]"
+            min="1"
           />
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>
 
-        <div className="flex items-center justify-center mb-4">
-          <div className="bg-white rounded-lg p-4 mr-2">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="PhonePe"
-                onChange={() => setPaymentMethod("PhonePe")}
-                className="mr-2"
-              />
-              <img src={phone_pe} alt="PhonePe" className="h-6 w-6 mr-2" />
-              PhonePe
-            </label>
+        <h2 className="text-white mb-2">Please select payment gateway.</h2>
+        
+        <div className="flex flex-col mb-4 mx-5 w-full">
+          <div className="flex items-center mb-[20px]">
+            <div className="bg-white rounded-lg p-4 flex-1 mr-2">
+              <label className="flex items-center font-bold">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="PhonePe"
+                  onChange={() => setPaymentMethod("PhonePe")}
+                  className="mr-2"
+                />
+                <img src={phone_pe} alt="PhonePe" className="h-6 w-6 mr-1" />
+                PhonePe Gateway
+              </label>
+            </div>
           </div>
 
-          <div className="bg-white rounded-lg p-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="GPay"
-                onChange={() => setPaymentMethod("GPay")}
-                className="mr-2"
-              />
-              <img src={gpay} alt="GPay" className="h-6 w-6 mr-2" />
-              GPay
-            </label>
+          <div className="flex items-center mb-[30px]">
+            <div className="bg-white rounded-lg p-4 flex-1">
+              <label className="flex items-center font-bold">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  value="Others"
+                  onChange={() => setPaymentMethod("Others")}
+                  className="mr-2"
+                />
+                Other UPI Gateway
+              </label>
+            </div>
           </div>
         </div>
 
         <div className="mb-4">
           <button
             onClick={handleAddFunds}
-            className="w-full px-[40px] bg-yellow-500 text-white font-bold py-2 rounded-full"
+            className="w-full mb-[10px] px-4 py-2 bg-yellow-500 text-white font-bold rounded-full"
           >
             Add Money
           </button>
-        </div>
-
-        <div className="text-center mb-4 text-white font-bold">OR</div>
-
-        <div className="mb-4">
+          <h1 className="text-white font-bold text-center mb-[10px] text-xl ">OR</h1>
           <button
             onClick={() => navigate("/qrpay")}
-            className="w-full px-[40px] bg-yellow-500 text-white font-bold py-2 rounded-full"
+            className="w-full px-4 py-2 bg-yellow-500 text-white font-bold rounded-full"
           >
             QR PAY
           </button>
@@ -186,7 +202,7 @@ function AddFunds() {
         <div>
           <button
             onClick={() => navigate("/addfundhistory")}
-            className="w-full px-[50px] bg-my-gradient-2 mt-[70px] text-white font-bold py-2 rounded-full"
+            className="w-full px-4 py-2 bg-my-gradient-2 mt-[20px] text-white font-bold rounded-full"
           >
             Deposit History
           </button>

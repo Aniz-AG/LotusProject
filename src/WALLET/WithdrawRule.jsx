@@ -3,10 +3,9 @@ import topBackground from "../Images/bg.png";
 import { BiArrowBack } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import { useSelector } from "react-redux";
+import useWallet from "../Hooks/useWallet";
 function WithdrawRule(){
-
-    
       const navbarStyle = {
         height: "60px",
         display: "flex",
@@ -18,14 +17,15 @@ function WithdrawRule(){
       const [status, setStatus] = useState(false);
       const [gameRates, setGameRates] = useState([]);
       const resinfo = useRule();
-      
+      const token=useSelector((state)=>state.userDetail.token);
+      const wallet_res=useWallet(token);
       useEffect(() => {
         if (resinfo && resinfo["content"]) {
           setStatus(true);
           setGameRates(resinfo["content"]);
         } else {
           setStatus(false);
-          setGameRates([]);
+          setGameRates([]); 
         }
       }, [resinfo]);
 

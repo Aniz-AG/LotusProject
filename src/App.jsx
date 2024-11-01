@@ -34,7 +34,7 @@ import Transaction from './WALLET/Transaction.jsx';
 import MyModal from './ShowModal.jsx';
 import Transfer from './WALLET/Transfer.jsx';
 import TransferModel from './WALLET/TransferModel.jsx';
-import AddFundHistroy from './WALLET/AddFundHistroy.jsx';
+import AddFundHistory from './WALLET/AddFundHistory.jsx';
 import WithdrawRule from './WALLET/WithdrawRule.jsx';
 import DepositRule from './WALLET/DepositRule.jsx';
 import WithdrawHistory from './WALLET/WithdrawHistory.jsx';
@@ -94,7 +94,7 @@ function App() {
             <Route path="/mymodel" element={<MyModal />} />
             <Route path="/transfer" element={<Transfer />} />
             <Route path="/transfermodel" element={<TransferModel />} />
-            <Route path="/addfundhistroy" element={<AddFundHistroy />} />
+            <Route path="/addfundhistory" element={<AddFundHistory />} />
             <Route path="/withdrawrule" element={<WithdrawRule />} />
             <Route path="/depositrule" element={<DepositRule />} />
             <Route path="/withdrawhistory" element={<WithdrawHistory />} />

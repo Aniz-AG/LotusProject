@@ -9,7 +9,7 @@ const History = ()=>{
     <h1>History</h1>
   </div>
       <div className="flex flex-col  items-center justify-center" >
-      <div onClick={() => navigate("/AddFundHistroy")} className="bg-my-gradient text-white  mb-4 h-10 w-80 border flex items-center justify-evenly rounded z-4 hover:shadow-lg shadow-md"><button  className="flex  py-2 px-1  "><p className="font-bold">Deposit History</p> </button> </div>
+      <div onClick={() => navigate("/AddFundHistory")} className="bg-my-gradient text-white  mb-4 h-10 w-80 border flex items-center justify-evenly rounded z-4 hover:shadow-lg shadow-md"><button  className="flex  py-2 px-1  "><p className="font-bold">Deposit History</p> </button> </div>
       <div onClick={() => navigate("/transaction")} className="bg-my-gradient text-white mb-4 h-10 w-80 border flex items-center justify-evenly rounded z-4 hover:shadow-lg shadow-md"><button  className="flex  py-2 px-1  "><p className="font-bold">Wallet History</p> </button> </div>
       <div onClick={() => navigate("/imp4")} className="bg-my-gradient text-white  mb-4 h-10 w-80 border flex items-center justify-evenly rounded z-4 hover:shadow-lg shadow-md"><button  className="flex  py-2 px-1  "><p className="font-bold">Main Bid-History</p> </button> </div>
       <div onClick={() => navigate("/imp3")} className="bg-my-gradient text-white  mb-4 h-10 w-80 border flex items-center justify-evenly rounded z-4 hover:shadow-lg shadow-md"><button  className="flex  py-2 px-1  "><p className="font-bold">Main Win-History</p> </button> </div>

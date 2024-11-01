@@ -1,17 +1,11 @@
-import topBackground from "../Images/bg.png";
-import { BiArrowBack } from "react-icons/bi";
-import fund from "../Images/wallet_transparent.png";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import usePayment from "../Hooks/usePayment";
 import { useSelector } from "react-redux";
 import useWallet from "../Hooks/useWallet";
-import { BsFileEarmarkRuledFill } from "react-icons/bs";
-import { FaHistory } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 function WithdrawFunds() {
-  // State for withdrawal timings
-  const [withdrawalTimings, setWithdrawalTimings] = useState("");
   const navbarStyle = {
     height: "60px",
     display: "flex",
@@ -66,6 +60,10 @@ function WithdrawFunds() {
     position: "relative",
   };
 
+  const notify = () => {
+    toast("Withdraw request sent successfully");
+  };
+
   const amount = useRef();
   const [method2, setMethod] = useState("");
   const token = useSelector((state) => state.userDetail.token);
@@ -80,34 +78,8 @@ function WithdrawFunds() {
   const navigate = useNavigate();
   const res = usePayment(token, number);
   const res2 = useWallet(token);
-
-  useEffect(() => {
-    const fetchWithdrawalTimings = async () => {
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      const raw = JSON.stringify({
-        unique_token: token,
-        env_type: "Prod",
-      app_key: "jAFaRUulipsumXLLSLPFytYvUUsgfh",
-      });
-
-      try {
-        const response = await fetch("https://lotus365matka.in/api-user-withdraw-fund-request", {
-          method: "POST",
-          headers: myHeaders,
-          body: raw,
-        });
-        const data = await response.json();
-        console.log("Withdrawal timings data:", data);
-        //setWithdrawalTimings(data.timings); // Assuming the API returns an object with a 'timings' property
-      } catch (error) {
-        console.error("Error fetching timings:", error);
-      }
-    };
-    fetchWithdrawalTimings();
-    
-    // Fetch wallet amount
+  console.log("Response of wallet details in withdraw:",res2);
+  useEffect(()=>{
     if (res2 && res2.wallet_amt) {
       setWalletAmt(res2.wallet_amt);
     }
@@ -139,7 +111,6 @@ function WithdrawFunds() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
-
     setIsSubmitting(true);
 
     const errors = validate(amount.current.value, Number(walletAmt));
@@ -152,6 +123,7 @@ function WithdrawFunds() {
 
     try {
       await fetchData(token, Number(amount.current.value), number, method2);
+      notify();
     } catch (error) {
       console.error(error);
     } finally {
@@ -208,7 +180,7 @@ function WithdrawFunds() {
           <div style={cardStyle} className="z-4 shadow-md">
             <div className="flex items-center justify-center pr-2">
               <p className="text-white bg-yellow-500 my-4 py-2 px-4 rounded-3xl font-bold text-sm">
-                Withdraw Timings: {withdrawalTimings || "Loading..."}
+                Withdraw Timings: {res2.withdraw_open_time} - {res2.withdraw_close_time}
               </p>
             </div>
             <div className="mt-2 grid grid-cols-2 gap-4 items-center justify-center ml-3">

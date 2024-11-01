@@ -1,19 +1,17 @@
-
-
-
-
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import bgImage from "./assets/ICONS AND BACKGROUNDS/login signup back.png";
 import logo from "./assets/ICONS AND BACKGROUNDS/Transparent logo.png";
+import { useDispatch } from "react-redux";
+import { setOtpDetails } from "./Util/forgotPasswordSlice";
 
 function ForgotPassword() {
   const [phone, setPhone] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const validate = (phone) => {
     const errors = {};
@@ -28,7 +26,40 @@ function ForgotPassword() {
     return errors;
   };
 
-  const handleSubmit = (e) => {
+  const sendOtp = async (phone) => {
+    try {
+      const response = await fetch("https://lotus365matka.in/api-forget-check-mobile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          env_type: "Prod",
+          app_key: "jAFaRUulipsumXLLSLPFytYvUUsgfh",
+          mobile: phone,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error("Failed to send OTP");
+      }
+
+      const data = await response.json();
+      
+      // Check if the OTP was sent successfully
+      if (data.status) {
+        dispatch(setOtpDetails({ otp: data.otp, phone })); // Dispatch the OTP and phone number
+        navigate("/otp");
+      } else {
+        throw new Error(data.msg); 
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      setFormErrors({ phone: error.message });
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -36,17 +67,9 @@ function ForgotPassword() {
     setFormErrors(errors);
 
     if (Object.keys(errors).length === 0) {
-      // Simulate sending a reset link (can replace with actual API call)
-      setTimeout(() => {
-        setSuccessMessage("A password reset link has been sent to your phone.");
-        setIsSubmitting(false);
-
-        // Redirect to OTPForgotPassword after submission
-        navigate("/OTP");
-      }, 1000);
-    } else {
-      setIsSubmitting(false);
+      await sendOtp(phone); // Call the sendOtp function
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -60,7 +83,7 @@ function ForgotPassword() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        color: "white", // Change the text color of the entire page to white
+        color: "white",
       }}
       className="bg-my-gradient-1"
     >
@@ -79,7 +102,7 @@ function ForgotPassword() {
             backgroundColor: "transparent",
             borderBottom: "2px solid goldenrod",
             boxShadow: "none",
-            color: "white", // Change input text color to white
+            color: "white",
           }}
           name="phone"
         />

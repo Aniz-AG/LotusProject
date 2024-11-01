@@ -216,9 +216,10 @@ function Otp() {
   const [data2, setdata2] = useState(null);
   
   const username = useSelector((state) => state.registerDetail.username);
-  const mobile = useSelector((state) => state.registerDetail.phone);
+  const mobile = useSelector((state) => state.forgotPassword.phone);
+  console.log("mobilez",mobile);
   const password = useSelector((state) => state.registerDetail.password);
-  const otp2 = useSelector((state) => state.registerDetail.otp);
+  const otp2 = useSelector((state) => state.forgotPassword.otp);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
@@ -251,7 +252,7 @@ function Otp() {
         setIsSubmit(true);
         const a = await fetchData(username, mobile, password);
         handleAdduser(a?.user_name, a?.unique_token, mobile);
-        navigate("/imp");
+        navigate("/change-password");
       } else {
         setErrorMsg("Enter Valid OTP");
       }

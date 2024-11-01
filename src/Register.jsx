@@ -7,7 +7,7 @@ import bgImage from "./assets/ICONS AND BACKGROUNDS/login signup back.png";
 import logo from "./assets/ICONS AND BACKGROUNDS/Transparent logo.png";
 import whatsapp from './assets/ICONS AND BACKGROUNDS/whatsapp.png';
 import useGameFront from "./Hooks/useGameFront";
-
+import useSocial from "./Hooks/useSocial";
 function Register() {
   const cardStyle = {
     width: "375px",
@@ -28,17 +28,15 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const token = useSelector((state) => state.userDetail.token);
-
-  const resinfo = useGameFront(token);
-
+  const social_res=useSocial();
+  console.log("Social data:",social_res);
   const [adminPhone, setAdminPhone] = useState('');
 
   useEffect(() => {
-    if (resinfo) {
-      setAdminPhone(resinfo["mobile_1"] || "1234567890"); // Fallback if no mobile is found
+    if (social_res) {
+      setAdminPhone(social_res["mobile_1"] || "1234567890"); // Fallback if no mobile is found
     }
-  }, [resinfo]);
+  }, [social_res]);
   const whatsappUrl = `https://wa.me/${adminPhone}`;
   
   const handleToggleCurrentPassword = () => {

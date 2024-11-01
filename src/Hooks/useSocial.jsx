@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 
 
-function useWallet(unique) {
+function useSocial() {
   const [res, setRes] = useState([]);
-  // console.log('token'+unique);
 
 
   const fetchData = async () => {
@@ -17,7 +16,6 @@ function useWallet(unique) {
       const raw = JSON.stringify({
         env_type: "Prod",
         app_key: "jAFaRUulipsumXLLSLPFytYvUUsgfh",
-        unique_token: unique,
       });
 
       const requestOptions = {
@@ -27,13 +25,13 @@ function useWallet(unique) {
         redirect: "follow",
       };
       const response = await fetch(
-        "https://lotus365matka.in/api-user-wallet-balance",
+        "https://lotus365matka.in/api-get-social-data",
         requestOptions
       );
       const result = await response.json();
 
       setRes(result);
-      console.log("This is useWallet hook:",result);
+      console.log("This is useSocial hook:",result);
     } catch (error) {
     //   console.log("error", error);
     }
@@ -47,4 +45,4 @@ function useWallet(unique) {
   return res;
 }
 
-export default useWallet;
+export default useSocial;

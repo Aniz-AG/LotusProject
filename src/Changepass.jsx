@@ -151,7 +151,7 @@ function Changepass() {
   return (
     <div className="bg-my-gradient-1 h-[100vh] ">
       <div className="  font-bold flex items-center justify-center text-white text-2xl mb-2">
-        <h1>Change Password</h1>
+        <h1 className="text-white">Change Password</h1>
       </div>
       <div style={changePassStyle} className="">
         <div className="flex justify-center items-center ">
