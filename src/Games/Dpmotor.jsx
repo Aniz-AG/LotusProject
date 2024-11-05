@@ -11,128 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import MyModal from "../ShowModal.jsx";
 
 function Dpmotor() {
-  const DpmotorArray = [
-    "120",
-    "123",
-    "124",
-    "125",
-    "126",
-    "127",
-    "128",
-    "129",
-    "130",
-    "134",
-    "135",
-    "136",
-    "137",
-    "138",
-    "139",
-    "140",
-    "145",
-    "146",
-    "147",
-    "148",
-    "149",
-    "150",
-    "156",
-    "157",
-    "158",
-    "159",
-    "160",
-    "167",
-    "168",
-    "169",
-    "170",
-    "178",
-    "179",
-    "180",
-    "189",
-    "190",
-    "230",
-    "234",
-    "235",
-    "236",
-    "237",
-    "238",
-    "239",
-    "240",
-    "245",
-    "246",
-    "247",
-    "248",
-    "249",
-    "250",
-    "256",
-    "257",
-    "258",
-    "259",
-    "260",
-    "267",
-    "268",
-    "269",
-    "270",
-    "278",
-    "279",
-    "280",
-    "289",
-    "290",
-    "340",
-    "345",
-    "346",
-    "347",
-    "348",
-    "349",
-    "350",
-    "356",
-    "357",
-    "358",
-    "359",
-    "360",
-    "367",
-    "368",
-    "369",
-    "370",
-    "378",
-    "379",
-    "380",
-    "389",
-    "390",
-    "450",
-    "456",
-    "457",
-    "458",
-    "459",
-    "460",
-    "467",
-    "468",
-    "469",
-    "470",
-    "478",
-    "479",
-    "480",
-    "489",
-    "490",
-    "560",
-    "567",
-    "568",
-    "569",
-    "570",
-    "578",
-    "579",
-    "580",
-    "589",
-    "590",
-    "670",
-    "678",
-    "679",
-    "680",
-    "689",
-    "690",
-    "780",
-    "789",
-    "790",
-    "890",
-  ];
   const todayDate = new Date().toISOString().split("T")[0];
   const months = [
     "January",
@@ -251,13 +129,15 @@ function Dpmotor() {
     calculateTimeLeft(); // Call calculateTimeLeft whenever openTime changes
   }, [openTime]);
 
+  //Handle proceed
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setFormErrors({});
+    
+    // Validate the inputs
     const errors = validate(digit.current.value, point.current.value);
-
     setFormErrors(errors);
+    
     if (Object.keys(errors).length > 0) {
       if (errors.digit) {
         toast(errors.digit);
@@ -268,28 +148,70 @@ function Dpmotor() {
     } else {
       setIsProceed(true);
       setFormErrors({});
-      const sessionValue = document.getElementById("option2").checked
-        ? "open"
-        : "close";
-      const newDataObject = {
-        digits: digit.current.value,
-        closedigits: "",
-        points: point.current.value,
-        session: sessionValue,
-      };
-      const newWalletAmt = walletAmt - point.current.value;
-
+  
+      // Extract the digits from the `pana`
+      const panaValue = digit.current.value;
+      const pointValue = point.current.value;
+  
+      // Ensure the `pana` value is at least 2 digits long
+      if (panaValue.length < 2) {
+        toast("Please enter a valid Pana (at least 2 digits)");
+        return;
+      }
+  
+      // Generate all combinations where one digit repeats twice and another appears once
+      const combinations = generateCombinations(panaValue);
+  
+      // For each combination, create a new data object
+      const sessionValue = document.getElementById("option2").checked ? "open" : "close";
+      
+      const newWalletAmt = walletAmt - pointValue;
       setWalletAmt(newWalletAmt);
-
+  
       setSubmittedData((prevData) => {
-        const updatedData = [...prevData, newDataObject];
-        console.log(submittedData);
+        const updatedData = [
+          ...prevData,
+          ...combinations.map((combination) => ({
+            digits: combination,
+            closedigits: "",
+            points: pointValue,
+            session: sessionValue,
+          })),
+        ];
+  
+        console.log(updatedData);
         return updatedData;
       });
+  
+      // Reset the form fields
       setDigitValue("");
       setPointValue("");
     }
   };
+  
+  // Function to generate combinations of digits where one is repeated twice and the other once
+  const generateCombinations = (panaValue) => {
+    const combinations = [];
+    const digits = [...panaValue];  // Split the string into an array of characters
+  
+    // Iterate through each pair of digits and create the combinations
+    for (let i = 0; i < digits.length; i++) {
+      for (let j = i + 1; j < digits.length; j++) {
+        // Get two unique digits
+        const digit1 = digits[i];
+        const digit2 = digits[j];
+  
+        // Create the combinations where one digit repeats twice and the other appears once
+        combinations.push(digit1 + digit1 + digit2);  
+        combinations.push(digit1 + digit2 + digit2); 
+        combinations.push(digit2 + digit1 + digit1);  
+        combinations.push(digit2 + digit2 + digit1);  
+      }
+    }
+  
+    return combinations;
+  };
+  
   const setDigitValue = (value) => {
     digit.current.value = value;
   };
@@ -302,7 +224,7 @@ function Dpmotor() {
     const errors = {};
     if (!digit) {
       errors.digit = "Please enter the number";
-    } else if (!DpmotorArray.includes(digit)) {
+    } else if (digit.length<2) {
       errors.digit = `Number ${digit} is not valid`;
     }
     if (!point) {
@@ -420,11 +342,11 @@ function Dpmotor() {
             //   list="digitList" // Step 2: Add list attribute
               autoComplete="off"
             />
-            <datalist id="digitList">
+            {/* <datalist id="digitList">
               {DpmotorArray.map((digit, index) => (
                 <option key={index} value={digit} />
               ))}
-            </datalist>
+            </datalist> */}
             <p className="mt-2 ml-2 font-bold text-white">Points</p>
             <input
               type="number"
@@ -446,7 +368,16 @@ function Dpmotor() {
                 <>
                   <button
                     className="py-2 px-4 border border-black-500 rounded-xl bg-yellow-600 hover:bg-yellow-500 cursor-pointer mt-4 w-full ml-3"
-                    onClick={() => setShowModal(true)}
+                    onClick={() => 
+                      {
+                        if(walletAmt<0)
+                        {
+                          toast("Not enough balance!");
+                        }
+                        else{
+                        setShowModal(true);
+                        }
+                      }}
                   >
                     Submit
                   </button>
@@ -454,7 +385,7 @@ function Dpmotor() {
                     <MyModal
                       closeModal={closeModal}
                       totalIndex={submittedData.length}
-                      totalPoints={totalPoints}
+                      totalPoints={submittedData.reduce((sum, item) => sum + parseInt(item.points), 0)} 
                       submittedData={submittedData}
                       gameId={gameId}
                       gameName={gameName}

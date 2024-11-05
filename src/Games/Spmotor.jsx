@@ -11,128 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import MyModal from "../ShowModal.jsx";
 
 function Spmotor() {
-  const SpmotorArray = [
-    "120",
-    "123",
-    "124",
-    "125",
-    "126",
-    "127",
-    "128",
-    "129",
-    "130",
-    "134",
-    "135",
-    "136",
-    "137",
-    "138",
-    "139",
-    "140",
-    "145",
-    "146",
-    "147",
-    "148",
-    "149",
-    "150",
-    "156",
-    "157",
-    "158",
-    "159",
-    "160",
-    "167",
-    "168",
-    "169",
-    "170",
-    "178",
-    "179",
-    "180",
-    "189",
-    "190",
-    "230",
-    "234",
-    "235",
-    "236",
-    "237",
-    "238",
-    "239",
-    "240",
-    "245",
-    "246",
-    "247",
-    "248",
-    "249",
-    "250",
-    "256",
-    "257",
-    "258",
-    "259",
-    "260",
-    "267",
-    "268",
-    "269",
-    "270",
-    "278",
-    "279",
-    "280",
-    "289",
-    "290",
-    "340",
-    "345",
-    "346",
-    "347",
-    "348",
-    "349",
-    "350",
-    "356",
-    "357",
-    "358",
-    "359",
-    "360",
-    "367",
-    "368",
-    "369",
-    "370",
-    "378",
-    "379",
-    "380",
-    "389",
-    "390",
-    "450",
-    "456",
-    "457",
-    "458",
-    "459",
-    "460",
-    "467",
-    "468",
-    "469",
-    "470",
-    "478",
-    "479",
-    "480",
-    "489",
-    "490",
-    "560",
-    "567",
-    "568",
-    "569",
-    "570",
-    "578",
-    "579",
-    "580",
-    "589",
-    "590",
-    "670",
-    "678",
-    "679",
-    "680",
-    "689",
-    "690",
-    "780",
-    "789",
-    "790",
-    "890",
-  ];
   const todayDate = new Date().toISOString().split("T")[0];
   const months = [
     "January",
@@ -248,15 +126,16 @@ function Spmotor() {
   }, [res.wallet_amt]);
 
   useEffect(() => {
-    calculateTimeLeft(); // Call calculateTimeLeft whenever openTime changes
+    calculateTimeLeft();
   }, [openTime]);
 
+
+  //HANDLE PROCEED -------------------------
   const handleSubmit = (e) => {
     e.preventDefault();
-
     setFormErrors({});
     const errors = validate(digit.current.value, point.current.value);
-
+  
     setFormErrors(errors);
     if (Object.keys(errors).length > 0) {
       if (errors.digit) {
@@ -266,29 +145,62 @@ function Spmotor() {
       }
       return;
     } else {
+      // Set isProceed to true after validation
       setIsProceed(true);
       setFormErrors({});
-      const sessionValue = document.getElementById("option2").checked
-        ? "open"
-        : "close";
-      const newDataObject = {
-        digits: digit.current.value,
+  
+      // Get the session value (either "open" or "close")
+      const sessionValue = document.getElementById("option2").checked ? "open" : "close";
+  
+      // Extract the digit string and points
+      const digitValue = digit.current.value;
+      const pointsValue = point.current.value;
+  
+      // Generate all possible 3-digit combinations from the entered digits
+      const combinations = generateCombinations(digitValue);
+  
+      // Create an array of data where each combination gets the same points
+      const newDataObjects = combinations.map((combination) => ({
+        digits: combination,
         closedigits: "",
-        points: point.current.value,
+        points: pointsValue,
         session: sessionValue,
-      };
-      const newWalletAmt = walletAmt - point.current.value;
-
-      setWalletAmt(newWalletAmt);
-
+      }));
+  
+      // Update wallet balance by subtracting the total points of all combinations
+      const newWalletAmt = walletAmt - pointsValue * combinations.length;
+        setWalletAmt(newWalletAmt);   
+      // Update the submitted data with the new combination objects
       setSubmittedData((prevData) => {
-        const updatedData = [...prevData, newDataObject];
-        console.log(submittedData);
+        const updatedData = [...prevData, ...newDataObjects];
+        console.log(updatedData); // Log the updated data
         return updatedData;
       });
+  
+      // Clear the digit and point values
       setDigitValue("");
       setPointValue("");
     }
+  };
+  
+  // Function to generate all 3-digit combinations from the input string
+  const generateCombinations = (digitString) => {
+    const combinations = [];
+    const digitsArray = digitString.split(""); // Split the digit string into an array of characters
+  
+    // Loop through all 3-digit combinations
+    for (let i = 0; i < digitsArray.length; i++) {
+      for (let j = 0; j < digitsArray.length; j++) {
+        for (let k = 0; k < digitsArray.length; k++) {
+          // Ensure the digits are distinct
+          if (i !== j && j !== k && i !== k) {
+            const combination = digitsArray[i] + digitsArray[j] + digitsArray[k];
+            combinations.push(combination);
+          }
+        }
+      }
+    }
+    return combinations;
   };
   const setDigitValue = (value) => {
     digit.current.value = value;
@@ -298,13 +210,12 @@ function Spmotor() {
     point.current.value = value;
   };
 
+  //Validation of input
   const validate = (digit, point) => {
     const errors = {};
     if (!digit) {
       errors.digit = "Please enter the number";
-    } else if (!SpmotorArray.includes(digit)) {
-      errors.digit = `Number ${digit} is not valid`;
-    }
+    } else if(digit.length<3) errors.digit="Digit not valid";
     if (!point) {
       errors.point = "Please enter point";
     } else if (parseInt(point) < 10) {
@@ -420,11 +331,11 @@ function Spmotor() {
             //   list="digitList" // Step 2: Add list attribute
               autoComplete="off"
             />
-            <datalist id="digitList">
+            {/* <datalist id="digitList">
               {SpmotorArray.map((digit, index) => (
                 <option key={index} value={digit} />
               ))}
-            </datalist>
+            </datalist> */}
             <p className="mt-2 ml-2 font-bold text-white">Points</p>
             <input
               type="number"
@@ -446,15 +357,24 @@ function Spmotor() {
                 <>
                   <button
                     className="py-2 px-4 border border-black-500 rounded-xl bg-yellow-600 hover:bg-yellow-500 cursor-pointer mt-4 w-full ml-3"
-                    onClick={() => setShowModal(true)}
+                    onClick={() => 
+                      {
+                        if(walletAmt<0)
+                        {
+                          toast("Not enough balance!");
+                        }
+                        else{
+                        setShowModal(true);
+                        }
+                      }}
                   >
                     Submit
                   </button>
-                  {showModal && (
+                  {walletAmt>=0 && showModal && (
                     <MyModal
                       closeModal={closeModal}
                       totalIndex={submittedData.length}
-                      totalPoints={totalPoints}
+                      totalPoints={submittedData.reduce((sum, item) => sum + parseInt(item.points), 0)} 
                       submittedData={submittedData}
                       gameId={gameId}
                       gameName={gameName}
@@ -477,7 +397,6 @@ function Spmotor() {
                 const removedItem = submittedData[indexToRemove];
                 const removedItemPoint = parseInt(removedItem.points);
 
-                
                 if (!isNaN(removedItemPoint)) {
                   const newWalletAmt = walletAmt + removedItemPoint;
                   setWalletAmt(newWalletAmt);
@@ -487,7 +406,7 @@ function Spmotor() {
                 if (newData.length === 0) {
                   setIsProceed(false); 
                 }
-                console.log(submittedData);
+                console.log("Data in SPmotor:",submittedData);
               };
 
               return (

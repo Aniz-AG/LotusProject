@@ -11,128 +11,47 @@ import "react-toastify/dist/ReactToastify.css";
 import MyModal from "../ShowModal.jsx";
 
 function Spdptp() {
-  const SpdptpArray = [
-    "120",
-    "123",
-    "124",
-    "125",
-    "126",
-    "127",
-    "128",
-    "129",
-    "130",
-    "134",
-    "135",
-    "136",
-    "137",
-    "138",
-    "139",
-    "140",
-    "145",
-    "146",
-    "147",
-    "148",
-    "149",
-    "150",
-    "156",
-    "157",
-    "158",
-    "159",
-    "160",
-    "167",
-    "168",
-    "169",
-    "170",
-    "178",
-    "179",
-    "180",
-    "189",
-    "190",
-    "230",
-    "234",
-    "235",
-    "236",
-    "237",
-    "238",
-    "239",
-    "240",
-    "245",
-    "246",
-    "247",
-    "248",
-    "249",
-    "250",
-    "256",
-    "257",
-    "258",
-    "259",
-    "260",
-    "267",
-    "268",
-    "269",
-    "270",
-    "278",
-    "279",
-    "280",
-    "289",
-    "290",
-    "340",
-    "345",
-    "346",
-    "347",
-    "348",
-    "349",
-    "350",
-    "356",
-    "357",
-    "358",
-    "359",
-    "360",
-    "367",
-    "368",
-    "369",
-    "370",
-    "378",
-    "379",
-    "380",
-    "389",
-    "390",
-    "450",
-    "456",
-    "457",
-    "458",
-    "459",
-    "460",
-    "467",
-    "468",
-    "469",
-    "470",
-    "478",
-    "479",
-    "480",
-    "489",
-    "490",
-    "560",
-    "567",
-    "568",
-    "569",
-    "570",
-    "578",
-    "579",
-    "580",
-    "589",
-    "590",
-    "670",
-    "678",
-    "679",
-    "680",
-    "689",
-    "690",
-    "780",
-    "789",
-    "790",
-    "890",
-  ];
+  const [spChecked, setSpChecked] = useState(false);
+  const [dpChecked, setDpChecked] = useState(false);
+  const [tpChecked, setTpChecked] = useState(false);
+  const SPCombinations = {
+    "0": ["127", "136", "145", "190", "235", "280", "370", "479", "460", "569", "389", "578"],
+    "1": ["128", "137", "146", "236", "245", "290", "380", "470", "489", "560", "678", "579"],
+    "2": ["129", "138", "147", "156", "237", "246", "345", "390", "480", "570", "679", "589"],
+    "3": ["120", "139", "148", "157", "238", "247", "256", "346", "490", "580", "670", "689"],
+    "4": ["130", "149", "158", "167", "239", "248", "257", "347", "356", "590", "680", "789"],
+    "5": ["140", "159", "168", "230", "249", "258", "267", "348", "357", "456", "690", "780"],
+    "6": ["123", "150", "169", "178", "240", "259", "268", "349", "358", "457", "367", "790"],
+    "7": ["124", "160", "179", "250", "269", "278", "340", "359", "368", "458", "467", "890"],
+    "8": ["125", "134", "170", "189", "260", "279", "350", "369", "378", "459", "456", "468"],
+    "9": ["126", "135", "180", "234", "270", "289", "360", "379", "450", "469", "478", "568"],
+  };
+
+  const DPCombinations = {
+    "0": ["550", "668", "244", "299", "226", "488", "677", "118", "334"],
+    "1": ["100", "119", "155", "227", "335", "344", "399", "588", "669"],
+    "2": ["200", "110", "228", "255", "336", "499", "660", "688", "778"],
+    "3": ["300", "166", "229", "337", "355", "445", "599", "779", "788"],
+    "4": ["400", "112", "220", "266", "338", "446", "455", "699", "770"],
+    "5": ["500", "113", "122", "117", "339", "366", "447", "799", "889"],
+    "6": ["600", "114", "277", "330", "448", "466", "556", "880", "899"],
+    "7": ["700", "115", "113", "188", "223", "377", "449", "557", "566"],
+    "8": ["800", "116", "224", "233", "288", "440", "477", "558", "990"],
+    "9": ["900", "117", "144", "199", "225", "388", "559", "577", "667"],
+  };
+
+  const TPCombinations = {
+    "0": ["000"],
+    "1": ["777"],
+    "2": ["444"],
+    "3": ["111"],
+    "4": ["888"],
+    "5": ["555"],
+    "6": ["222"],
+    "7": ["999"],
+    "8": ["666"],
+    "9": ["333"],
+  };
   const todayDate = new Date().toISOString().split("T")[0];
   const months = [
     "January",
@@ -235,6 +154,7 @@ function Spdptp() {
       console.log("error", error);
     }
   };
+
   useEffect(() => {
     fetchData();
     console.log(isOpen);
@@ -251,13 +171,19 @@ function Spdptp() {
     calculateTimeLeft(); // Call calculateTimeLeft whenever openTime changes
   }, [openTime]);
 
+
+  //Proceed button click-------------------------------------------------------------------------------------------------------- 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
+    // Clear existing errors
     setFormErrors({});
+    
+    // Validate the form inputs (digit and points)
     const errors = validate(digit.current.value, point.current.value);
-
     setFormErrors(errors);
+    
+    // If there are validation errors, show them and return early
     if (Object.keys(errors).length > 0) {
       if (errors.digit) {
         toast(errors.digit);
@@ -265,31 +191,59 @@ function Spdptp() {
         toast(errors.point);
       }
       return;
-    } else {
-      setIsProceed(true);
-      setFormErrors({});
-      const sessionValue = document.getElementById("option2").checked
-        ? "open"
-        : "close";
-      const newDataObject = {
-        digits: digit.current.value,
-        closedigits: "",
-        points: point.current.value,
-        session: sessionValue,
-      };
-      const newWalletAmt = walletAmt - point.current.value;
-
-      setWalletAmt(newWalletAmt);
-
-      setSubmittedData((prevData) => {
-        const updatedData = [...prevData, newDataObject];
-        console.log(submittedData);
-        return updatedData;
-      });
-      setDigitValue("");
-      setPointValue("");
     }
+    
+    // Proceed with the combinations logic
+    setIsProceed(true); // Mark the form as ready for submission
+    setFormErrors({}); // Clear form errors
+  
+    // Get the selected session (open/close)
+    const sessionValue = selectedOption === "open" ? "open" : "close";
+  
+    // Find the corresponding combinations for the entered digit and session
+    const selectedDigit = digit.current.value;
+    let matchingCombinations = [];
+  
+    // Determine which combination set to use based on the session and digit
+    if (selectedOption === "open") {
+      if (spChecked) matchingCombinations = [...matchingCombinations, ...SPCombinations[selectedDigit]]; // SP combinations
+      if (dpChecked) matchingCombinations = [...matchingCombinations, ...DPCombinations[selectedDigit]]; // DP combinations
+      if (tpChecked) matchingCombinations = [...matchingCombinations, ...TPCombinations[selectedDigit]]; // TP combinations
+    } else if (selectedOption === "close") {
+      if (spChecked) matchingCombinations = [...matchingCombinations, ...SPCombinations[selectedDigit]]; // SP combinations
+      if (dpChecked) matchingCombinations = [...matchingCombinations, ...DPCombinations[selectedDigit]]; // DP combinations
+      if (tpChecked) matchingCombinations = [...matchingCombinations, ...TPCombinations[selectedDigit]]; // TP combinations
+    }
+  
+    // Update the UI to show the combinations
+    setRes({
+      ...res,
+      combinations: matchingCombinations, // Store the matching combinations
+    });
+    // Update wallet amount after the user places the bet
+    const newWalletAmt = walletAmt - parseInt(point.current.value);
+    setWalletAmt(newWalletAmt);
+  
+    // Add the bet to submitted data
+    const newDataObject = {
+      digits: digit.current.value,
+      session: sessionValue,
+      points: point.current.value,
+      combinations: matchingCombinations, // Include matching combinations in the submitted data
+    };
+  
+    setSubmittedData((prevData) => {
+      const updatedData = [...prevData, newDataObject];
+      return updatedData;
+    });
+  
+    // Clear input values
+    setDigitValue("");
+    setPointValue("");
   };
+  
+  
+
   const setDigitValue = (value) => {
     digit.current.value = value;
   };
@@ -302,7 +256,7 @@ function Spdptp() {
     const errors = {};
     if (!digit) {
       errors.digit = "Please enter the number";
-    } else if (!SpdptpArray.includes(digit)) {
+    } else if (digit.length>=2) {
       errors.digit = `Number ${digit} is not valid`;
     }
     if (!point) {
@@ -412,7 +366,6 @@ function Spdptp() {
 
 
 
-
             {/* Checkboxes for Sp, Dp, and Tp */}
             <div className="mt-4 flex justify-center items-center space-x-4 text-white text-2xl">
               <div className="flex items-center">
@@ -453,7 +406,6 @@ function Spdptp() {
             </div>
 
 
-
             <p className="mt-2 ml-2 font-bold text-white">{selectedOption === "open" ? "Open Pana" : "Close Pana"}</p>
             <input
               type="number"
@@ -464,11 +416,11 @@ function Spdptp() {
               // list="digitList" // Step 2: Add list attribute
               autoComplete="off"
             />
-            <datalist id="digitList">
-              {SpdptpArray.map((digit, index) => (
+            {/* <datalist id="digitList">
+              {[...Object.keys(SPCombinations), ...Object.keys(DPCombinations), ...Object.keys(TPCombinations)].map((digit, index) => (
                 <option key={index} value={digit} />
               ))}
-            </datalist>
+            </datalist> */}
             <p className="mt-2 ml-2 font-bold text-white">Points</p>
             <input
               type="number"
@@ -496,69 +448,82 @@ function Spdptp() {
                   </button>
                   {showModal && (
                     <MyModal
-                      closeModal={closeModal}
-                      totalIndex={submittedData.length}
-                      totalPoints={totalPoints}
-                      submittedData={submittedData}
-                      gameId={gameId}
-                      gameName={gameName}
-                      pana={pana}
-                      gametype={selectedOption==="open" ? "Open" : "Close"}
-                      date={formattedDate}
-                      clearSubmittedData={clearSubmittedData}
-                    />
+                    closeModal={closeModal}
+                    totalIndex={submittedData.length}
+                    totalPoints={submittedData.reduce((sum, item) => sum + parseInt(item.points), 0)} 
+                    submittedData={submittedData}
+                    gameId={gameId}
+                    gameName={gameName}
+                    pana={pana}
+                    gametype={selectedOption === "open" ? "Open" : "Close"}
+                    date={formattedDate}
+                    clearSubmittedData={clearSubmittedData}
+                  />
                   )}
                 </>
               )}
             </div>
             {submittedData.map((data, index) => {
-              const handleClickRemoveDiv = (indexToRemove) => () => {
-                const newData = submittedData.filter(
-                  (_, i) => i !== indexToRemove
-                );
-                setSubmittedData(newData);
-                setFormErrors({});
-                const removedItem = submittedData[indexToRemove];
-                const removedItemPoint = parseInt(removedItem.points);
+  const handleClickRemoveDiv = (indexToRemove, combinationIndex) => () => {
+    const newData = [...submittedData];
+    newData[indexToRemove].combinations.splice(combinationIndex, 1);
 
-                // Check if removedItemPoint is a valid number
-                if (!isNaN(removedItemPoint)) {
-                  const newWalletAmt = walletAmt + removedItemPoint;
-                  setWalletAmt(newWalletAmt);
-                } else {
-                  console.error("Invalid points data:", removedItem);
-                }
-                if (newData.length === 0) {
-                  setIsProceed(false); // Set isProceed to false if only one item is left
-                }
-                console.log(submittedData);
-              };
+    if (newData[indexToRemove].combinations.length === 0) {
+      newData.splice(indexToRemove, 1);
+    }
 
-              return (
-                <div key={index} className="w-full flex mb-3 ">
-                  <div
-                    className="shadow-md w-10/12  p-1  border border-black-500 bg-white text-black flex justify-between"
-                    style={{ borderRadius: "25px" }}
-                  >
-                    <div className="flex flex-col items-center ml-4">
-                      <h3>{isOpen ? "Open Pana" : "Close Pana"}</h3>
-                      <h3>{data.digits}</h3>
-                    </div>
-                    <div className="flex flex-col items-center mr-4">
-                      <h3>Points</h3>
-                      <h3>{data.points}</h3>
-                    </div>
-                  </div>
-                  <button
-                    className="shadow-md border bg-white py-2 px-4 flex items-center justify-center ml-1"
-                    style={{ borderRadius: "20px" }}
-                    onClick={handleClickRemoveDiv(index)}
-                  >
-                    <TrashIcon className="h-100 w-100 text-red-500" />
-                  </button>
-                </div>
-              );
-            })}
+    setSubmittedData(newData);
+    setFormErrors({});
+    const removedItemPoint = parseInt(data.points);
+    if (!isNaN(removedItemPoint)) {
+      const newWalletAmt = walletAmt + removedItemPoint;
+      setWalletAmt(newWalletAmt);
+    } else {
+      console.error("Invalid points data:", data);
+    }
+
+    if (newData.length === 0) {
+      setIsProceed(false);
+    }
+  };
+
+  return (
+    <div key={index} className="w-full mb-3">
+      {data.combinations && data.combinations.length > 0 ? (
+        data.combinations.map((combination, idx) => (
+          <div key={idx} className="flex items-center mb-3 w-full font-bold">
+            {/* Combination Box */}
+            <div
+              className="shadow-md w-10/12 px-4 border border-black-500 bg-white text-black flex justify-between items-center"
+              style={{ borderRadius: "25px" }}
+            >
+              <div className="flex flex-col items-center ml-4">
+                <h3>{isOpen ? "Open Pana" : "Close Pana"}</h3>
+                <h3>{combination}</h3>
+              </div>
+              <div className="flex flex-col items-center mr-4">
+                <h3>Points</h3>
+                <h3>{data.points}</h3>
+              </div>
+            </div>
+
+            {/* Trash Icon */}
+            <button
+              className="shadow-md border bg-white py-2 px-4 flex items-center justify-center ml-1"
+              style={{ borderRadius: "20px" }}
+              onClick={handleClickRemoveDiv(index, idx)}
+            >
+              <TrashIcon className="h-6 w-6 text-red-500" />
+            </button>
+          </div>
+        ))
+      ) : (
+        <div>No combinations found.</div>
+      )}
+    </div>
+  );
+})}
+
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-
 const MyModal = ({
   closeModal,
   totalIndex,
@@ -34,6 +33,7 @@ const MyModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!isSubmitting) { // Check if form is already being submitted
       setIsSubmitting(true); // Set submitting state to true
       try {
@@ -143,8 +143,6 @@ const MyModal = ({
     );
     const result = await response.json();
     if (result?.status === true) {
-
-      // notify();
     } else {
       throw new Error("Invalid username and password");
     }
