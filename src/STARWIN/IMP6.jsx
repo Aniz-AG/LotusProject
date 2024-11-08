@@ -14,14 +14,14 @@ function IMP6() {
   const handleDataFetch = (status, data) => {
     setFetchResultStatus(status);
     setFetchResultData(data);
-    console.log(data);
+    console.log("Data in starline",data);
   };
 
   const topStyle = {
     backgroundImage: `url(${topBackground})`,
     backgroundSize: "cover",
-    height: "auto", // Set the height of the div
-    width: "100%", // Set the width of the div
+    height: "auto",
+    width: "100%", 
     paddingBottom: "300px",
   };
 
@@ -29,7 +29,7 @@ function IMP6() {
     <>
       <div className="relative h-[100vh] bg-my-gradient-1 mt-[-8px]">
         <div className="sticky top-0">
-          <Starwin onDataFetch={handleDataFetch} /> {/* Pass the function as prop */}
+          <Starwin onDataFetch={handleDataFetch} />
         </div>
 
         <div className="text-black" >
@@ -37,7 +37,7 @@ function IMP6() {
           {/* Conditionally render Windata components or the search image */}
           {fetchResultStatus && fetchResultData ? (
             fetchResultData.win_data.map((item, index) => (
-              <Biddata key={index} data={item} />
+              <Starwindata key={index} data={item} />
             ))
           ) : (
             // <img  className="h-48 w-48 absolute left-1/2 transform -translate-x-1/2   " alt="Search" />

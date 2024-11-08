@@ -1,9 +1,18 @@
 function Windata({ data }) {
+  const formatDate = (dateStr) => {
+    // Create a new Date object from the given string
+    const date = new Date(dateStr);
+  
+    // Format the date to the desired format: "8 Nov, 2024"
+    return date.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric"
+    });
+  };
   return (
     <>
       <div className="mb-5">
-        
-
         {/* Conditional rendering using logical && operator */}
         {data.pana === "Single Digit" && (
           <div className="bg-white text-black mr-2 ml-4 z-2 -mt-1 p-1 flex justify-between align-middle border border-black rounded-t-2xl rounded-tr-2xl rounded-br-2xl rounded-bl-0 pl-4 pr-5">
@@ -13,12 +22,11 @@ function Windata({ data }) {
               <span className="font-bold">{data.session} Digit : </span>{data.digits}
             </p>
             <p><span className="font-bold">Session: </span> {data.session}</p>
-            <p>{/* Any additional content you want to render */}</p>
-            <p> <span className="font-bold">Date:</span>  {data.bid_date}</p>
+            <p> <span className="font-bold">Date:</span>{formatDate(data.wining_date)}</p>
           </div>
           <div className="flex flex-col justify-around">
             <p className="font-bold">{data.pana}</p>
-            <p className="font-bold">{data.points} pts</p>
+            <p className="font-bold">{data.amount} pts</p>
           </div>
         </div>
         )}
@@ -32,11 +40,11 @@ function Windata({ data }) {
             </p>
             <p><span className="font-bold">Session: </span> {data.session}</p>
             <p>{/* Any additional content you want to render */}</p>
-            <p> <span className="font-bold">Date:</span>  {data.bid_date}</p>
+            <p> <span className="font-bold">Date:</span>  {formatDate(data.wining_date)}</p>
           </div>
           <div className="flex flex-col justify-around">
             <p className="font-bold">{data.pana}</p>
-            <p className="font-bold">{data.points} pts</p>
+            <p className="font-bold">{data.amount} pts</p>
           </div>
         </div>
         )}
@@ -50,11 +58,11 @@ function Windata({ data }) {
             </p>
             <p><span className="font-bold">Session: </span> {data.session}</p>
             <p>{/* Any additional content you want to render */}</p>
-            <p> <span className="font-bold">Date:</span>  {data.bid_date}</p>
+            <p> <span className="font-bold">Date:</span>  {formatDate(data.wining_date)}</p>
           </div>
           <div className="flex flex-col justify-around">
             <p className="font-bold">{data.pana}</p>
-            <p className="font-bold">{data.points} pts</p>
+            <p className="font-bold">{data.amount} pts</p>
           </div>
         </div>
         )}
@@ -68,11 +76,11 @@ function Windata({ data }) {
             </p>
             <p><span className="font-bold">Session: </span> {data.session}</p>
             <p>{/* Any additional content you want to render */}</p>
-            <p> <span className="font-bold">Date:</span>  {data.bid_date}</p>
+            <p> <span className="font-bold">Date:</span>  {formatDate(data.wining_date)}</p>
           </div>
           <div className="flex flex-col justify-around">
             <p className="font-bold">{data.pana}</p>
-            <p className="font-bold">{data.points} pts</p>
+            <p className="font-bold">{data.amount} pts</p>
           </div>
         </div>
         )}
@@ -86,11 +94,11 @@ function Windata({ data }) {
             </p>
             <p><span className="font-bold">Session: </span> {data.session}</p>
             <p>{/* Any additional content you want to render */}</p>
-            <p> <span className="font-bold">Date:</span>  {data.bid_date}</p>
+            <p> <span className="font-bold">Date:</span>  {formatDate(data.wining_date)}</p>
           </div>
           <div className="flex flex-col justify-around">
             <p className="font-bold">{data.pana}</p>
-            <p className="font-bold">{data.points} pts</p>
+            <p className="font-bold">{data.amount} pts</p>
           </div>
         </div>
         )}
@@ -104,11 +112,11 @@ function Windata({ data }) {
             </p>
             <p><span className="font-bold">Session: </span> {data.session}</p>
             <p>{/* Any additional content you want to render */}</p>
-            <p> <span className="font-bold">Date:</span>  {data.bid_date}</p>
+            <p> <span className="font-bold">Date:</span>  {formatDate(data.wining_date)}</p>
           </div>
           <div className="flex flex-col justify-around">
             <p className="font-bold">{data.pana}</p>
-            <p className="font-bold">{data.points} pts</p>
+            <p className="font-bold">{data.amount} pts</p>
           </div>
         </div>
         )}
@@ -122,11 +130,11 @@ function Windata({ data }) {
             </p>
             <p><span className="font-bold">Session: </span> {data.session}</p>
             <p>{/* Any additional content you want to render */}</p>
-            <p> <span className="font-bold">Date:</span>  {data.bid_date}</p>
+            <p> <span className="font-bold">Date:</span>  {formatDate(data.wining_date)}</p>
           </div>
           <div className="flex flex-col justify-around">
             <p className="font-bold">{data.pana}</p>
-            <p className="font-bold">{data.points} pts</p>
+            <p className="font-bold">{data.amount} pts</p>
           </div>
         </div>
         )}

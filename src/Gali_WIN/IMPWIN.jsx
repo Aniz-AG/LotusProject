@@ -5,7 +5,7 @@ import { GoCircleSlash } from "react-icons/go";
 
 function IMPWIN() {
   const [fetchResultStatus, setFetchResultStatus] = useState(false);
-  const [fetchResultData, setFetchResultData] = useState(null); // State to store fetch result
+  const [fetchResultData, setFetchResultData] = useState(null); 
 
   // Function to update fetch result status and data
   const handleDataFetch = (status, data) => {
