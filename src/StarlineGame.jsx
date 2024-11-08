@@ -51,7 +51,7 @@ function StarlineGame() {
                 <p className="font-bold text-xs md:text-lg lg:text-2xl text-gray-800">
                   {game.game_name}
                 </p>
-                <p className="font-medium text-sm text-gray-500">{game.open_result ? `${game.open_result}` : "***_*"}</p>
+                <p className="font-medium text-sm text-black">{game.open_result ? `${game.open_result}` : "***_*"}</p>
               </div>
             </div>
 

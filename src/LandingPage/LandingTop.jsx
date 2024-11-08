@@ -34,7 +34,7 @@ function LandingTop() {
           className="rounded-b-[10px]"
         >
           <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignSelf: 'bottom' }} className="translate-x-[20px]">
-            <a href="https://your-apk-download-link.com" target="_blank" rel="noopener noreferrer" className="flex items-center text-white font-bold shadow-emerald-200 shadow-md rounded-lg">
+            <a href="https://sattamatkaofficials.com/uploads/images/lotus365matka_1730995020.apk" target="_blank" rel="noopener noreferrer" className="flex items-center text-white font-bold shadow-emerald-200 shadow-md rounded-lg">
               <span className="p-2">Download App</span>
               <IoMdDownload className="text-white text-2xl" />
             </a>
@@ -74,7 +74,7 @@ function LandingTop() {
           {/* Animated text section */}
           <div className="flex justify-center mb-2 overflow-hidden shadow-sm">
             <p className="animate-marquee whitespace-nowrap bg-purple text-black font-bold text-sm px-4">
-              PLEASE DOWNLOAD OUR ANDROID APPLICATION TO ADD AND WITHDRAW FAST(24X7)
+            PLEASE DOWNLOAD ANDROID APPLICATION FOR FAST DEPOSIT AND FAST WITHDRAW (24×7)
             </p>
           </div>
 

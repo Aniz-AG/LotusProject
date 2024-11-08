@@ -71,7 +71,7 @@ function LandingNavbar() {
 
   const handleClick = () => {
     // window.location.href = resinfo1['web_starline_chart_url'];
-    window.open('https://lotus365matka.in/uploads/images/GT_1718623233.apk', '_blank');
+    window.open('https://sattamatkaofficials.com/uploads/images/lotus365matka_1730995020.apk', '_blank');
   };
   
 
@@ -80,7 +80,9 @@ function LandingNavbar() {
       <div className="container flex mx-auto flex-1 justify-between items-center ">
         <div className="flex items-center ">
           <div onClick={handleHamburgerClick} style={Hamburg} className="mr-4">
-            <img src={HamburgerIcon} alt="Hamburger Icon" className="w-8 h-8" />
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" viewBox="0 0 24 24" fill="black">
+              <path d="M3 6h18M3 12h18M3 18h18" stroke="white" strokeWidth="2" />
+            </svg>
           </div>
 
           <div className="text-xl fading-text">
@@ -117,7 +119,7 @@ function LandingNavbar() {
                 <FaUser className="w-8 h-6 mt-2  "/>
                 <div className="flex flex-col items-center justify-cente">
                 <div className="text-xl font-bold ml-2">
-                  {/* {username ? username : "sumit"} */}
+                  {/* {username ? username : ""} */}
                   Username
                 </div>
                 <div className="text-sm  opacity-75 ml-1 ">Phone Number</div>
@@ -259,7 +261,7 @@ function LandingNavbar() {
             </li> */}
             <li className="">
               <NavLink
-                to="/change"
+                to="/"
                 className= "flex   py-2 px-4 hover:bg-white hover:text-black rounded-lg"
                 onClick={handleClick}
               >

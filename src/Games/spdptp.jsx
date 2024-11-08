@@ -202,23 +202,26 @@ function Spdptp() {
   
     // Find the corresponding combinations for the entered digit and session
     const selectedDigit = digit.current.value;
-    let matchingCombinations = [];
+    const combinations = {
+      SP: [],
+      DP: [],
+      TP: [],
+    };
   
     // Determine which combination set to use based on the session and digit
     if (selectedOption === "open") {
-      if (spChecked) matchingCombinations = [...matchingCombinations, ...SPCombinations[selectedDigit]]; // SP combinations
-      if (dpChecked) matchingCombinations = [...matchingCombinations, ...DPCombinations[selectedDigit]]; // DP combinations
-      if (tpChecked) matchingCombinations = [...matchingCombinations, ...TPCombinations[selectedDigit]]; // TP combinations
+      if (spChecked) combinations.SP = [...combinations.SP, ...SPCombinations[selectedDigit]]; // SP combinations
+      if (dpChecked) combinations.DP = [...combinations.DP, ...DPCombinations[selectedDigit]]; // DP combinations
+      if (tpChecked) combinations.TP = [...combinations.TP, ...TPCombinations[selectedDigit]]; // TP combinations
     } else if (selectedOption === "close") {
-      if (spChecked) matchingCombinations = [...matchingCombinations, ...SPCombinations[selectedDigit]]; // SP combinations
-      if (dpChecked) matchingCombinations = [...matchingCombinations, ...DPCombinations[selectedDigit]]; // DP combinations
-      if (tpChecked) matchingCombinations = [...matchingCombinations, ...TPCombinations[selectedDigit]]; // TP combinations
+      if (spChecked) combinations.SP = [...combinations.SP, ...SPCombinations[selectedDigit]]; // SP combinations
+      if (dpChecked) combinations.DP = [...combinations.DP, ...DPCombinations[selectedDigit]]; // DP combinations
+      if (tpChecked) combinations.TP = [...combinations.TP, ...TPCombinations[selectedDigit]]; // TP combinations
     }
   
-    // Update the UI to show the combinations
     setRes({
       ...res,
-      combinations: matchingCombinations, // Store the matching combinations
+      combinations: combinations, // Store the matching combinations
     });
     // Update wallet amount after the user places the bet
     const newWalletAmt = walletAmt - parseInt(point.current.value);
@@ -229,14 +232,15 @@ function Spdptp() {
       digits: digit.current.value,
       session: sessionValue,
       points: point.current.value,
-      combinations: matchingCombinations, // Include matching combinations in the submitted data
+      combinations: combinations, // Include matching combinations in the submitted data
     };
   
     setSubmittedData((prevData) => {
       const updatedData = [...prevData, newDataObject];
+      console.log("submitted data in spdptp:",updatedData);
       return updatedData;
     });
-  
+    
     // Clear input values
     setDigitValue("");
     setPointValue("");
@@ -442,7 +446,7 @@ function Spdptp() {
                 <>
                   <button
                     className="py-2 px-4 border border-black-500 rounded-xl bg-yellow-600 hover:bg-yellow-500 cursor-pointer mt-4 w-full ml-3"
-                    onClick={() => setShowModal(true)}
+                    onClick={() =>{console.log("Pana:",pana); setShowModal(true)}}
                   >
                     Submit
                   </button>
@@ -450,7 +454,9 @@ function Spdptp() {
                     <MyModal
                     closeModal={closeModal}
                     totalIndex={submittedData.length}
-                    totalPoints={submittedData.reduce((sum, item) => sum + parseInt(item.points), 0)} 
+                    totalPoints={submittedData.reduce((sum, data) => {
+                      return sum + parseInt(data.points) * data.combinations.SP.length + parseInt(data.points) * data.combinations.DP.length + parseInt(data.points) * data.combinations.TP.length;
+                    }, 0)} 
                     submittedData={submittedData}
                     gameId={gameId}
                     gameName={gameName}
@@ -463,67 +469,67 @@ function Spdptp() {
                 </>
               )}
             </div>
-            {submittedData.map((data, index) => {
-  const handleClickRemoveDiv = (indexToRemove, combinationIndex) => () => {
-    const newData = [...submittedData];
-    newData[indexToRemove].combinations.splice(combinationIndex, 1);
+    {submittedData.map((data, index) => {
+      const handleClickRemoveDiv = (combinationIndex) => () => {
+        const newData = [...submittedData];
 
-    if (newData[indexToRemove].combinations.length === 0) {
-      newData.splice(indexToRemove, 1);
-    }
+        // Loop through the keys of combinations to find and remove the specific combination
+        for (const key in newData[index].combinations) {
+          if (newData[index].combinations[key].length > combinationIndex) {
+            const removedItemPoint = parseInt(data.points);
+            if (!isNaN(removedItemPoint)) {
+              const newWalletAmt = walletAmt + removedItemPoint;
+              setWalletAmt(newWalletAmt);
+            }
+            // Remove the specific combination
+            newData[index].combinations[key].splice(combinationIndex, 1);
 
-    setSubmittedData(newData);
-    setFormErrors({});
-    const removedItemPoint = parseInt(data.points);
-    if (!isNaN(removedItemPoint)) {
-      const newWalletAmt = walletAmt + removedItemPoint;
-      setWalletAmt(newWalletAmt);
-    } else {
-      console.error("Invalid points data:", data);
-    }
+            if (newData[index].combinations[key].length === 0) {
+              const allEmpty = Object.values(newData[index].combinations).every(arr => arr.length === 0);
+              if (allEmpty) {
+                newData.splice(index, 1);
+              }
+            }
+            break;
+          }
+        }
+        setSubmittedData(newData);
+        setFormErrors({});
+      };
 
-    if (newData.length === 0) {
-      setIsProceed(false);
-    }
-  };
+      return (
+        <div key={index} className="w-full mb-3">
+          {Object.keys(data.combinations).map((key) => (
+            data.combinations[key].length > 0 && data.combinations[key].map((combination, idx) => (
+              <div key={`${key}-${idx}`} className="flex items-center mb-3 w-full font-bold">
+                {/* Combination Box */}
+                <div
+                  className="shadow-md w-10/12 px-4 border border-black-500 bg-white text-black flex justify-between items-center"
+                  style={{ borderRadius: "25px" }}
+                >
+                  <div className="flex flex-col items-center ml-4">
+                    <h3>{combination}</h3> {/* Display the combination number */}
+                  </div>
+                  <div className="flex flex-col items-center mr-4">
+                    <h3>Points</h3>
+                    <h3>{data.points}</h3> {/* Display the associated points */}
+                  </div>
+                </div>
 
-  return (
-    <div key={index} className="w-full mb-3">
-      {data.combinations && data.combinations.length > 0 ? (
-        data.combinations.map((combination, idx) => (
-          <div key={idx} className="flex items-center mb-3 w-full font-bold">
-            {/* Combination Box */}
-            <div
-              className="shadow-md w-10/12 px-4 border border-black-500 bg-white text-black flex justify-between items-center"
-              style={{ borderRadius: "25px" }}
-            >
-              <div className="flex flex-col items-center ml-4">
-                <h3>{isOpen ? "Open Pana" : "Close Pana"}</h3>
-                <h3>{combination}</h3>
+                {/* Trash Icon */}
+                <button
+                  className="shadow-md border bg-white py-2 px-4 flex items-center justify-center ml-1"
+                  style={{ borderRadius: "20px" }}
+                  onClick={handleClickRemoveDiv(idx)} // Pass the index of the combination to be removed
+                >
+                  <TrashIcon className="h-6 w-6 text-red-500" />
+                </button>
               </div>
-              <div className="flex flex-col items-center mr-4">
-                <h3>Points</h3>
-                <h3>{data.points}</h3>
-              </div>
-            </div>
-
-            {/* Trash Icon */}
-            <button
-              className="shadow-md border bg-white py-2 px-4 flex items-center justify-center ml-1"
-              style={{ borderRadius: "20px" }}
-              onClick={handleClickRemoveDiv(index, idx)}
-            >
-              <TrashIcon className="h-6 w-6 text-red-500" />
-            </button>
-          </div>
-        ))
-      ) : (
-        <div>No combinations found.</div>
-      )}
-    </div>
-  );
-})}
-
+            ))
+          ))}
+        </div>
+      );
+    })}
           </div>
         </div>
       </div>

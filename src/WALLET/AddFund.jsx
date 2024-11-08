@@ -17,7 +17,8 @@ function AddFunds() {
   const unique = useSelector((state) => state.userDetail.token);
   const resinfo = useUpiOption(unique, mobile);
   const res = useWallet(unique);
-
+  const [minDeposit,setMinDeposit]=useState(0);
+  
   const fetchUpiId = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -50,12 +51,47 @@ function AddFunds() {
     }
   };
 
+  // Fetch minimum deposit balance
+  const fetchMinDeposit = async () => {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+      unique_token: unique,
+      env_type: "Prod",
+      app_key: "jAFaRUulipsumXLLSLPFytYvUUsgfh",
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(`https://lotus365matka.in/api-last-fund-request-detail`, requestOptions);
+      const result = await response.json();
+
+      console.log("Min deposit response:", result);  // Log the response for inspection
+      if (result?.status === true) { 
+        setMinDeposit(result.min_amt || 0);
+      } else {
+        console.error("Error fetching min deposit value:", result?.msg);
+      }
+    } catch (error) {
+      console.error("Error fetching min deposit:", error);
+    }
+  };
+
   useEffect(() => {
     fetchUpiId();
+    fetchMinDeposit();  // Fetch minimum deposit value when the component mounts
   }, []);
 
+
   const handleAddFunds = () => {
-    if (parseInt(amountToAdd) >= 1) {
+    if (parseInt(amountToAdd) >= minDeposit) {
       if (!paymentMethod) {
         setError("Please select a payment method");
         return;
@@ -63,7 +99,7 @@ function AddFunds() {
       setError("");
       initiateUpiPayment(paymentMethod, amountToAdd);
     } else {
-      setError("Minimum amount to add is 1");
+      setError(`Minimum amount to add is ${minDeposit}`);
     }
   };
 
@@ -115,7 +151,6 @@ function AddFunds() {
       return;
     }
 
-    // Attempt to open the UPI app directly
     try {
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       window.open(uri, '_blank');
@@ -143,7 +178,7 @@ function AddFunds() {
             onChange={(e) => setAmountToAdd(e.target.value)}
             placeholder="Enter amount to add"
             className="w-[250px] border rounded-full py-2 text-center border-yellow-600 border-[3px]"
-            min="1"
+            min={minDeposit}
           />
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
         </div>

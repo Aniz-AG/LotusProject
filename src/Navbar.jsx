@@ -43,6 +43,12 @@ function Navbar() {
   console.log("Navbar resinfo:",resinfo);
   const telegram = resinfo["telegram_no"];
   console.log("phone number:",telegram);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!username || !token) {
+      handlelogout();  // Trigger logout if no username or token
+    }
+  }, [username, token, dispatch, navigate]);
 
   const handleHamburgerClick = () => {
     console.log(isBackdropActive);
@@ -54,7 +60,6 @@ function Navbar() {
     setBackdropActive(!isBackdropActive);
     setSidebarActive(!isSidebarActive);
   };
-  const dispatch = useDispatch();
 
   const handlelogout = () => {
     dispatch(logout());
@@ -67,12 +72,13 @@ function Navbar() {
   };
 
   const handleClick = () => {
-    if (resinfo.app_link) {
-      console.log(resinfo.app_link);
-      window.open(resinfo.app_link, '_blank');
-    } else {
-      console.error('App link is not available');
-    }
+    // if (resinfo.app_link) {
+    //   console.log(resinfo.app_link);
+    //   window.open(resinfo.app_link, '_blank');
+    // } else {
+    //   console.error('App link is not available');
+    // }
+    window.open('https://sattamatkaofficials.com/uploads/images/lotus365matka_1730995020.apk','_blank');
   };
 
   const handleClick1 = () => {
@@ -126,7 +132,7 @@ function Navbar() {
                 <div className="flex flex-col">
                 {/* <RiUser3Fill className="w- h-10 mt-2"/> */}
                 <div className="text-xl font-bold ml-1">
-                  {username ? username.substring(0,10).concat(username.length>10?"...":""): "sumit"}
+                  {username ? username.substring(0,10).concat(username.length>10?"...":""): ""}
 
                 </div>
                 <div className="text-sm opacity-75 ml-1 ">{mobile}</div>

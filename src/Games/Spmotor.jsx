@@ -187,14 +187,26 @@ function Spmotor() {
   const generateCombinations = (digitString) => {
     const combinations = [];
     const digitsArray = digitString.split(""); // Split the digit string into an array of characters
-  
+    const singlePanaArray = [
+      "120", "123", "124", "125", "126", "127", "128", "129", "130", "134", "135", "136", 
+      "137", "138", "139", "140", "145", "146", "147", "148", "149", "150", "156", "157", 
+      "158", "159", "160", "167", "168", "169", "170", "178", "179", "180", "189", "190", 
+      "230", "234", "235", "236", "237", "238", "239", "240", "245", "246", "247", "248", 
+      "249", "250", "256", "257", "258", "259", "260", "267", "268", "269", "270", "278", 
+      "279", "280", "289", "290", "340", "345", "346", "347", "348", "349", "350", "356", 
+      "357", "358", "359", "360", "367", "368", "369", "370", "378", "379", "380", "389", 
+      "390", "450", "456", "457", "458", "459", "460", "467", "468", "469", "470", "478", 
+      "479", "480", "489", "490", "560", "567", "568", "569", "570", "578", "579", "580", 
+      "589", "590", "670", "678", "679", "680", "689", "690", "780", "789", "790", "890"
+    ];
     // Loop through all 3-digit combinations
     for (let i = 0; i < digitsArray.length; i++) {
       for (let j = 0; j < digitsArray.length; j++) {
         for (let k = 0; k < digitsArray.length; k++) {
           // Ensure the digits are distinct
-          if (i !== j && j !== k && i !== k) {
+          if (i !== j && j !== k && i !== k && digitsArray[i]!='0' && digitsArray[j]!='0') {
             const combination = digitsArray[i] + digitsArray[j] + digitsArray[k];
+            if(singlePanaArray.includes(combination))
             combinations.push(combination);
           }
         }
@@ -378,7 +390,7 @@ function Spmotor() {
                       submittedData={submittedData}
                       gameId={gameId}
                       gameName={gameName}
-                      pana={pana}
+                      pana="Single Pana"
                       gametype={selectedOption==="open" ? "Open" : "Close"}
                       date={formattedDate}
                       clearSubmittedData={clearSubmittedData}

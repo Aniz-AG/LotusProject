@@ -15,16 +15,15 @@ function IMP5() {
   };
 
   return (
-    <div className="relative bg-my-gradient-1 h-[100vh] mt-[-8px] overflow-hidden">
-      <div className="sticky top-0">
-        <Starbid onDataFetch={handleDataFetch} /> {/* Pass the function as prop */}
+    <div className="bg-my-gradient-1 h-[100vh] mt-[-8px] overflow-auto">
+      <div className="sticky top-0 bg-my-gradient-1">
+        <Starbid onDataFetch={handleDataFetch} />
       </div>
 
-      <div className="text-black h-[calc(100vh-100px)] overflow-y-auto"> {/* Adjust height for scrolling */}
-        {/* Conditionally render Starbiddata components or the no data message */}
+      <div className="h-[100vh] ">
         {fetchResultStatus && fetchResultData ? (
           fetchResultData.bid_data.map((item, index) => (
-            <Starbiddata key={index} data={item} /> // Ensure this component is correctly used
+            <Starbiddata key={index} data={item} />
           ))
         ) : (
           <div className="flex flex-col justify-center items-center py-5">

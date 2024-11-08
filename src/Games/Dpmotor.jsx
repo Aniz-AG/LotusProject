@@ -12,6 +12,98 @@ import MyModal from "../ShowModal.jsx";
 
 function Dpmotor() {
   const todayDate = new Date().toISOString().split("T")[0];
+  const doublePanaArray = [
+    "100",
+    "110",
+    "112",
+    "113",
+    "114",
+    "115",
+    "116",
+    "117",
+    "118",
+    "119",
+    "122",
+    "133",
+    "144",
+    "155",
+    "166",
+    "177",
+    "188",
+    "199",
+    "200",
+    "220",
+    "223",
+    "224",
+    "225",
+    "226",
+    "227",
+    "228",
+    "229",
+    "233",
+    "244",
+    "255",
+    "266",
+    "277",
+    "288",
+    "299",
+    "300",
+    "330",
+    "334",
+    "335",
+    "336",
+    "337",
+    "338",
+    "339",
+    "344",
+    "355",
+    "366",
+    "377",
+    "388",
+    "399",
+    "400",
+    "440",
+    "445",
+    "446",
+    "447",
+    "448",
+    "449",
+    "455",
+    "466",
+    "477",
+    "488",
+    "499",
+    "500",
+    "550",
+    "556",
+    "557",
+    "558",
+    "559",
+    "566",
+    "577",
+    "588",
+    "599",
+    "600",
+    "660",
+    "667",
+    "668",
+    "669",
+    "677",
+    "688",
+    "699",
+    "700",
+    "770",
+    "778",
+    "779",
+    "788",
+    "799",
+    "800",
+    "880",
+    "889",
+    "899",
+    "900",
+    "990",
+  ];
   const months = [
     "January",
     "February",
@@ -196,16 +288,21 @@ function Dpmotor() {
   
     // Iterate through each pair of digits and create the combinations
     for (let i = 0; i < digits.length; i++) {
-      for (let j = i + 1; j < digits.length; j++) {
-        // Get two unique digits
+      for (let j = i + 1; j < digits.length; j++) {        
         const digit1 = digits[i];
         const digit2 = digits[j];
-  
-        // Create the combinations where one digit repeats twice and the other appears once
-        combinations.push(digit1 + digit1 + digit2);  
-        combinations.push(digit1 + digit2 + digit2); 
-        combinations.push(digit2 + digit1 + digit1);  
-        combinations.push(digit2 + digit2 + digit1);  
+        
+        const combo1 = digit1 + digit1 + digit2;
+        const combo2 = digit1 + digit2 + digit2;
+        const combo3 = digit2 + digit1 + digit1;
+        const combo4 = digit2 + digit2 + digit1;
+        
+        // Check if the combination is in the doublePanaArray before adding
+        if (doublePanaArray.includes(combo1)) combinations.push(combo1);
+        if (doublePanaArray.includes(combo2)) combinations.push(combo2);
+        if (doublePanaArray.includes(combo3)) combinations.push(combo3);
+        if (doublePanaArray.includes(combo4)) combinations.push(combo4); 
+        
       }
     }
   
@@ -389,7 +486,7 @@ function Dpmotor() {
                       submittedData={submittedData}
                       gameId={gameId}
                       gameName={gameName}
-                      pana={pana}
+                      pana="Double Pana"
                       gametype={selectedOption==="open" ? "Open" : "Close"}
                       date={formattedDate}
                       clearSubmittedData={clearSubmittedData}

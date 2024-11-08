@@ -200,7 +200,7 @@ function SinglePana() {
   const [selectedOption, setSelectedOption] = useState("open");
   const { gameId, openTime, gameName, pana } = useLocation().state;
   console.log(gameId);
-
+  console.log("Game Pana:",pana);
   const fetchData = async () => {
     try {
       const myHeaders = new Headers();
